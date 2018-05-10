@@ -16,7 +16,7 @@ data "template_file" "setup-master" {
 resource "aws_instance" "master" {
   ami                  = "${data.aws_ami.rhel7_2.id}"
   # Master nodes require at least 16GB of memory.
-  instance_type        = "m5.xlarge"
+  instance_type        = "m4.xlarge"
   subnet_id            = "${aws_subnet.public-subnet.id}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
   user_data            = "${data.template_file.setup-master.rendered}"
