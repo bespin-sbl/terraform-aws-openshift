@@ -269,8 +269,8 @@ There are some commands in the `makefile` which make common operations a little 
 
 You'll be paying for:
 
-- 1 x m4.xlarge instance
-- 2 x t2.large instances
+- 1 x m5.xlarge instance
+- 2 x m5.large instances
 
 ## Recipes
 
