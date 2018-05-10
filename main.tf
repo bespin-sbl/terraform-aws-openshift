@@ -3,6 +3,14 @@ provider "aws" {
   region  = "${var.region}"
 }
 
+terraform {
+  backend "s3" {
+    region = "ap-northeast-2"
+    bucket = "terraform-state-bespin-sbl-seoul"
+    key = "terraform-openshift.tfstate"
+  }
+}
+
 //  Create the OpenShift cluster using our module.
 module "openshift" {
   source          = "./modules/openshift"
