@@ -6,19 +6,20 @@ infrastructure:
 openshift:
 	# Add our identity for ssh, add the host key to avoid having to accept the
 	# the host key manually. Also add the identity of each node to the bastion.
+	ssh-add ~/.ssh/openshift.pem
 	ssh-keyscan -t rsa -H $$(terraform output bastion-public_dns) >> ~/.ssh/known_hosts
-	ssh -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H master.openshift.local >> ~/.ssh/known_hosts"
-	ssh -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H node1.openshift.local >> ~/.ssh/known_hosts"
-	ssh -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H node2.openshift.local >> ~/.ssh/known_hosts"
+	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H master.openshift.local >> ~/.ssh/known_hosts"
+	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H node1.openshift.local >> ~/.ssh/known_hosts"
+	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H node2.openshift.local >> ~/.ssh/known_hosts"
 
 	# Copy our inventory to the master and run the install script.
-	scp -i ~/.ssh/openshift.pem ./inventory.cfg ec2-user@$$(terraform output bastion-public_dns):~
-	cat ./scripts/install-from-bastion.sh | ssh -o StrictHostKeyChecking=no -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns)
+	scp ./inventory.cfg ec2-user@$$(terraform output bastion-public_dns):~
+	cat ./scripts/install-from-bastion.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_dns)
 
 	# Now the installer is done, run the postinstall steps on each host.
-	cat ./scripts/post-install-master.sh | ssh -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
-	cat ./scripts/post-install-node.sh | ssh -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
-	cat ./scripts/post-install-node.sh | ssh -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
+	cat ./scripts/post-install-master.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
+	cat ./scripts/post-install-node.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
+	cat ./scripts/post-install-node.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
 
 # Open the console.
 browse-openshift:
@@ -26,13 +27,13 @@ browse-openshift:
 
 # SSH onto the master.
 ssh-bastion:
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns)
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns)
 ssh-master:
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
 ssh-node1:
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
 ssh-node2:
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
 
 # Create sample services.
 sample:
