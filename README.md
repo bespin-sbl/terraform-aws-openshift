@@ -51,23 +51,26 @@ created, which is used to install the OpenShift Origin platform on the hosts.
 
 You need:
 
-1. [Terraform](https://www.terraform.io/intro/getting-started/install.html) - `brew update && brew install terraform`
-2. An AWS account, configured with the cli locally -
+1. Install [Terraform](https://www.terraform.io/intro/getting-started/install.html)
+```
+brew update && brew install terraform
+```
+2. An AWS account, configured with the cli locally
 ```
 if [[ "$unamestr" == 'Linux' ]]; then
-        dnf install -y awscli || yum install -y awscli
+    dnf install -y awscli || yum install -y awscli
 elif [[ "$unamestr" == 'FreeBSD' ]]; then
-        brew install -y awscli
+    brew install -y awscli
 fi
 ```
-3. Creates a RSA key pair with the specified name.
+3. Creates a S3 bucket for backend.
 ```
-aws ec2 create-key-pair --key-name openshift --output text > ~/.ssh/openshift.pem
-chmod 600 ~/.ssh/openshift.pem
+aws s3 mb s3://terraform-state-openshift --region us-east-1
 ```
-4. Creates a own s3 bucket for backend.
+4. Creates a RSA key pair.
 ```
-aws s3 mb s3://terraform-state-virginia --region us-east-1
+aws ec2 create-key-pair --key-name openshift | grep "BEGIN RSA PRIVATE KEY" | cut -d'"' -f4 | sed 's/\\n/\n/g' > ~/.ssh/openshift.pem
+chmod 400 ~/.ssh/openshift.pem
 ```
 
 ## Creating the Cluster
