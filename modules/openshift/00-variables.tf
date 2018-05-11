@@ -34,4 +34,3 @@ variable "cluster_name" {
 variable "cluster_id" {
   description = "ID of the cluster, e.g: 'openshift-cluster-us-east-1'. Useful when running multiple clusters in the same AWS account."
 }
-

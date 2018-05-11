@@ -16,6 +16,6 @@ data "template_file" "inventory" {
 
 //  Create the inventory.
 resource "local_file" "inventory" {
-  content     = "${data.template_file.inventory.rendered}"
+  content = "${data.template_file.inventory.rendered}"
   filename = "${path.cwd}/inventory.cfg"
 }
