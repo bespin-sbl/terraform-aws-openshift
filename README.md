@@ -60,6 +60,15 @@ elif [[ "$unamestr" == 'FreeBSD' ]]; then
         brew install -y awscli
 fi
 ```
+3. Creates a RSA key pair with the specified name.
+```
+aws ec2 create-key-pair --key-name openshift --output text > ~/.ssh/openshift.pem
+chmod 600 ~/.ssh/openshift.pem
+```
+4. Creates a own s3 bucket for backend.
+```
+aws s3 mb s3://terraform-state-virginia --region us-east-1
+```
 
 ## Creating the Cluster
 
@@ -80,7 +89,7 @@ $ make infrastructure
 var.region
   Region to deploy the cluster into
 
-  Enter a value: ap-southeast-1
+  Enter a value: ap-northeast-2
 
 ...
 
@@ -110,8 +119,8 @@ make browse-openshift
 To open a browser to admin console, use the following credentials to login:
 
 ```
-Username: admin
-Password: 123
+Username: developer
+Password: password123
 ```
 
 ## Accessing and Managing OpenShift

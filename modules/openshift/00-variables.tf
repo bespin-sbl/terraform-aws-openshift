@@ -23,10 +23,6 @@ variable "key_name" {
   description = "The name of the key to user for ssh access, e.g: consul-cluster"
 }
 
-variable "public_key_path" {
-  description = "The local public key path, e.g. ~/.ssh/id_rsa.pub"
-}
-
 variable "cluster_name" {
   description = "Name of the cluster, e.g: 'openshift-cluster'. Useful when running multiple clusters in the same AWS account."
 }

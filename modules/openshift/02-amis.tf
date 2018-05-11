@@ -30,7 +30,7 @@ data "aws_ami" "rhel7_2" {
 data "aws_ami" "amazonlinux" {
   most_recent = true
 
-  owners = ["137112412989"]
+  owners = ["137112412989"] // AWS's account ID.
 
   filter {
     name   = "architecture"

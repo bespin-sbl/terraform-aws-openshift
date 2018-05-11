@@ -1,9 +1,3 @@
-//  Create an SSH keypair
-resource "aws_key_pair" "keypair" {
-  key_name   = "${var.key_name}"
-  public_key = "${file(var.public_key_path)}"
-}
-
 //  Create the master userdata script.
 data "template_file" "setup-master" {
   template = "${file("${path.module}/files/setup-master.sh")}"
@@ -41,7 +35,7 @@ resource "aws_instance" "master" {
     volume_type = "gp2"
   }
 
-  key_name = "${aws_key_pair.keypair.key_name}"
+  key_name = "${var.key_name}"
   
   //  Use our common tags and add a specific name.
   tags = "${merge(
@@ -89,7 +83,7 @@ resource "aws_instance" "node1" {
     volume_type = "gp2"
   }
 
-  key_name = "${aws_key_pair.keypair.key_name}"
+  key_name = "${var.key_name}"
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
@@ -126,7 +120,7 @@ resource "aws_instance" "node2" {
     volume_type = "gp2"
   }
 
-  key_name = "${aws_key_pair.keypair.key_name}"
+  key_name = "${var.key_name}"
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
