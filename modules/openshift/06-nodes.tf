@@ -36,7 +36,7 @@ resource "aws_instance" "master" {
   }
 
   key_name = "${var.key_name}"
-  
+
   //  Use our common tags and add a specific name.
   tags = "${merge(
     local.common_tags,
