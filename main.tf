@@ -1,3 +1,12 @@
+//  Setup the backend "s3".
+terraform {
+  backend "s3" {
+    region = "ap-northeast-2"
+    bucket = "terraform-state-bespin-sbl-seoul"
+    key = "terraform-openshift.tfstate"
+  }
+}
+
 //  Setup the core provider information.
 provider "aws" {
   region  = "${var.region}"
@@ -7,7 +16,7 @@ provider "aws" {
 module "openshift" {
   source          = "./modules/openshift"
   region          = "${var.region}"
-  amisize         = "t2.large"    //  Smallest that meets the min specs for OS
+  amisize         = "m4.large"    //  Smallest that meets the min specs for OS
   vpc_cidr        = "10.0.0.0/16"
   subnetaz        = "${var.subnetaz}"
   subnet_cidr     = "10.0.1.0/24"

@@ -270,7 +270,7 @@ There are some commands in the `makefile` which make common operations a little 
 You'll be paying for:
 
 - 1 x m4.xlarge instance
-- 2 x t2.large instances
+- 2 x m4.large instances
 
 ## Recipes
 

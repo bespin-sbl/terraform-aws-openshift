@@ -1,7 +1,7 @@
 //  The region we will deploy our cluster into.
 variable "region" {
   description = "Region to deploy the cluster into"
-  default = "us-east-1"
+  default = "ap-northeast-2"
 }
 
 //  The public key to use for SSH access.
@@ -24,5 +24,6 @@ variable "subnetaz" {
     eu-west-2 = "eu-west-2a"
     eu-central-1 = "eu-central-1a"
     ap-southeast-1 = "ap-southeast-1a"
+    ap-northeast-2 = "ap-northeast-2a"
   }
 }
