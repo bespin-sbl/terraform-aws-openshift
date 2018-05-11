@@ -1,9 +1,9 @@
 //  Setup the backend "s3".
 terraform {
   backend "s3" {
-    region = "ap-northeast-2"
-    bucket = "terraform-state-bespin-sbl-seoul"
-    key = "terraform-openshift.tfstate"
+    region = "us-east-1"
+    bucket = "terraform-state-openshift"
+    key = "openshift.tfstate"
   }
 }
 
