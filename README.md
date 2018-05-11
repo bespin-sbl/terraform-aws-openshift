@@ -222,10 +222,9 @@ No additional should be required for the operator to set up the cluster.
 
 Note that dynamically provisioned EBS volumes will not be destroyed when running `terrform destroy`. The will have to be destroyed manuallly when bringing down the cluster.
 
-
 ## Additional Configuration
 
-The easiest way to configure is to change the settings in the [./inventory.template.cfg](inventories/inventory.template.cfg) file, based on settings in the [OpenShift Origin - Advanced Installation](https://docs.openshift.org/latest/install_config/install/advanced_install.html) guide.
+The easiest way to configure is to change the settings in the [./inventories/inventory.template.cfg](./inventories/inventory.template.cfg) file, based on settings in the [OpenShift Origin - Advanced Installation](https://docs.openshift.org/latest/install_config/install/advanced_install.html) guide.
 
 When you run `make openshift`, all that happens is the `inventory.template.cfg` is turned copied to `inventory.cfg`, with the correct IP addresses loaded from terraform for each node. Then the inventory is copied to the master and the setup script runs. You can see the details in the [`makefile`](./makefile).
 
@@ -233,14 +232,13 @@ When you run `make openshift`, all that happens is the `inventory.template.cfg` 
 
 Currently, OpenShift 3.9 is installed.
 
-To change the version, just update the version identifier in this line of the [`./install-from-bastion.sh`](./install-from-bastion.sh) script:
+To change the version, just update the version identifier in this line of the [`./scripts/install-from-bastion.sh`](./scripts/install-from-bastion.sh) script:
 
 ```bash
 git clone -b release-3.9 https://github.com/openshift/openshift-ansible
 ```
 
 Available versions are listed [here](https://github.com/openshift/openshift-ansible#getting-the-correct-version).
-
 
 | Version | Status |
 |---------|--------|
@@ -355,7 +353,6 @@ At this stage if the AWS generated hostnames for OpenShift nodes are specified i
 
 ```
 Failure summary:
-
 
   1. Hosts:    ip-10-0-1-129.ec2.internal
      Play:     Configure masters
