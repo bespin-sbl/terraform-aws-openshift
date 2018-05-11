@@ -37,7 +37,7 @@ ssh-node2:
 
 # Create sample services.
 sample:
-	oc login $$(terraform output master-url) --insecure-skip-tls-verify=true -u=developer -p=password123
+	oc login $$(terraform output master-url) --insecure-skip-tls-verify=true -u=developer -p=password#123
 	oc new-project sample
 	oc process -f ./sample/counter-service.yml | oc create -f -
 
