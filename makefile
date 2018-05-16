@@ -27,12 +27,16 @@ browse-openshift:
 
 # SSH onto the master.
 ssh-bastion:
+	ssh-add -t 10 ~/.ssh/openshift.pem
 	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns)
 ssh-master:
+	ssh-add -t 10 ~/.ssh/openshift.pem
 	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
 ssh-node1:
+	ssh-add -t 10 ~/.ssh/openshift.pem
 	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
 ssh-node2:
+	ssh-add -t 10 ~/.ssh/openshift.pem
 	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
 
 # Create sample services.
