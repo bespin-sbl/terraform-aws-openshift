@@ -23,7 +23,7 @@ openshift:
 
 # Destroy the infrastructure.
 destroy:
-	terraform destroy -auto-approve
+	terraform init && terraform destroy -auto-approve
 
 # Open the console.
 browse-openshift:
