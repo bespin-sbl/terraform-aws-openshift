@@ -1,6 +1,7 @@
 //  Output some useful variables for quick SSH access etc.
 output "public_hostname" {
-  value = "${var.cluster_name}.${var.base_domain}"
+  //value = "${var.cluster_name}.${var.base_domain}"
+  value = "${aws_route53_record.master-a-public.name}"
 }
 
 output "master-public_dns" {
