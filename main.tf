@@ -1,8 +1,8 @@
 //  Setup the backend "s3".
 terraform {
   backend "s3" {
-    region = "us-east-1"
-    bucket = "terraform-state-openshift"
+    region = "ap-northeast-2"
+    bucket = "terraform-state-bespin-sbl-seoul"
     key = "openshift.tfstate"
   }
 }
@@ -16,15 +16,20 @@ provider "aws" {
 module "openshift" {
   source          = "./modules/openshift"
   region          = "${var.region}"
-  amisize         = "m4.large"    //  Smallest that meets the min specs for OS
+  ami_type        = "m4.large"    //  Smallest that meets the min specs for OS
   vpc_cidr        = "10.0.0.0/16"
   subnet_cidr     = "10.0.1.0/24"
-  key_name        = "openshift"
-  cluster_name    = "openshift-cluster"
-  cluster_id      = "openshift-cluster-${var.region}"
+  key_name        = "bespin-sbl"
+  cluster_name    = "openshift"
+  cluster_id      = "openshift-${var.region}"
+  base_domain     = "opspresso.com"
 }
 
 //  Output some useful variables for quick SSH access etc.
+output "console-url" {
+  value = "https://${module.openshift.public_hostname}:8443"
+}
+
 output "master-url" {
   value = "https://${module.openshift.master-public_ip}.xip.io:8443"
 }
@@ -34,6 +39,7 @@ output "master-public_dns" {
 output "master-public_ip" {
   value = "${module.openshift.master-public_ip}"
 }
+
 output "bastion-public_dns" {
   value = "${module.openshift.bastion-public_dns}"
 }

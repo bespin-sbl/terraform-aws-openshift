@@ -1,4 +1,8 @@
 //  Output some useful variables for quick SSH access etc.
+output "public_hostname" {
+  value = "${var.cluster_name}.${var.base_domain}"
+}
+
 output "master-public_dns" {
   value = "${aws_instance.master.public_dns}"
 }

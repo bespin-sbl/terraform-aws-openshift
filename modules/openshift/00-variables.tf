@@ -1,9 +1,9 @@
 variable "region" {
-  description = "The region to deploy the cluster in, e.g: us-east-1."
+  description = "The region to deploy the cluster in, e.g: us-east-1"
 }
 
-variable "amisize" {
-  description = "The size of the cluster nodes, e.g: t2.large. Note that OpenShift will not run on anything smaller than t2.large"
+variable "ami_type" {
+  description = "The size of the cluster nodes, e.g: m4.large. Note that OpenShift will not run on anything smaller than m4.large"
 }
 
 variable "vpc_cidr" {
@@ -15,15 +15,19 @@ variable "subnet_cidr" {
 }
 
 variable "key_name" {
-  description = "The name of the key to user for ssh access, e.g: consul-cluster"
+  description = "The name of the key to user for ssh access, e.g: openshift"
 }
 
 variable "cluster_name" {
-  description = "Name of the cluster, e.g: 'openshift-cluster'. Useful when running multiple clusters in the same AWS account."
+  description = "Name of the cluster, e.g: 'openshift'. Useful when running multiple clusters in the same AWS account."
 }
 
 variable "cluster_id" {
-  description = "ID of the cluster, e.g: 'openshift-cluster-us-east-1'. Useful when running multiple clusters in the same AWS account."
+  description = "ID of the cluster, e.g: 'openshift-us-east-1'. Useful when running multiple clusters in the same AWS account."
+}
+
+variable "base_domain" {
+  description = "Base domain of the cluster, e.g: openshift.com"
 }
 
 data "aws_availability_zones" "azs" {}
