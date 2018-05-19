@@ -45,9 +45,9 @@ resource "aws_route53_record" "node2-a-record" {
 data "aws_route53_zone" "public" {
   name = "${var.base_domain}"
 }
-resource "aws_route53_record" "master-a-public" {
+resource "aws_route53_record" "master-a-console" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
-  name = "${var.cluster_name}.${data.aws_route53_zone.public.name}"
+  name = "console.${data.aws_route53_zone.public.name}"
   type = "A"
   ttl  = 300
   records = [
@@ -56,7 +56,7 @@ resource "aws_route53_record" "master-a-public" {
 }
 resource "aws_route53_record" "master-a-apps" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
-  name = "*.${var.cluster_name}.${data.aws_route53_zone.public.name}"
+  name = "*.apps.${data.aws_route53_zone.public.name}"
   type = "A"
   ttl  = 300
   records = [
