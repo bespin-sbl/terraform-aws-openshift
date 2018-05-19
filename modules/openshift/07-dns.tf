@@ -45,7 +45,7 @@ resource "aws_route53_record" "node2-a-record" {
 data "aws_route53_zone" "public" {
   name = "${var.base_domain}"
 }
-resource "aws_route53_record" "master-a-console" {
+resource "aws_route53_record" "master-a-public" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name = "${var.cluster_name}.${data.aws_route53_zone.public.name}"
   type = "A"
