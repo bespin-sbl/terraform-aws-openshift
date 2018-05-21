@@ -13,6 +13,9 @@ cat > /etc/aws/aws.conf <<- EOF
 Zone = ${availability_zone}
 EOF
 
+curl -s http://repo.toast.sh/helper/slack.sh | \
+ bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Start: master $(hostname)
+
 # Create initial logs config.
 cat > ./awslogs.conf << EOF
 [general]
