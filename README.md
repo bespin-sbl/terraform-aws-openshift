@@ -52,11 +52,11 @@ created, which is used to install the OpenShift Origin platform on the hosts.
 You need:
 
 1. Install [Terraform](https://www.terraform.io/intro/getting-started/install.html)
-```
+```bash
 brew update && brew install terraform
 ```
 2. An AWS account, configured with the cli locally
-```
+```bash
 if [[ "$unamestr" == 'Linux' ]]; then
     dnf install -y awscli || yum install -y awscli
 elif [[ "$unamestr" == 'FreeBSD' ]]; then
@@ -64,11 +64,11 @@ elif [[ "$unamestr" == 'FreeBSD' ]]; then
 fi
 ```
 3. Creates a S3 bucket for backend.
-```
+```bash
 aws s3 mb s3://terraform-state-openshift --region us-east-1
 ```
 4. Creates a RSA key pair.
-```
+```bash
 aws ec2 create-key-pair --key-name openshift | grep "BEGIN RSA PRIVATE KEY" | cut -d'"' -f4 | sed 's/\\n/\n/g' > ~/.ssh/openshift.pem
 chmod 400 ~/.ssh/openshift.pem
 ```
@@ -87,8 +87,10 @@ make infrastructure
 
 You will be asked for a region to deploy in, use `us-east-1` or your preferred region. You can configure the nuances of how the cluster is created in the [`main.tf`](./main.tf) file. Once created, you will see a message like:
 
-```
+```bash
 $ make infrastructure
+```
+```
 var.region
   Region to deploy the cluster into
 
@@ -147,9 +149,11 @@ The url will be something like `https://a.b.c.d.xip.io:8443`.
 
 The master node has the OpenShift client installed and is authenticated as a cluter administrator. If you SSH onto the master node via the bastion, then you can use the OpenShift client and have full access to all projects:
 
-```
+```bash
 $ make ssh-master # or if you prefer: ssh -t -A ec2-user@$(terraform output bastion-public_dns) ssh master.openshift.local
 $ oc get pods
+```
+```
 NAME                       READY     STATUS    RESTARTS   AGE
 docker-registry-1-d9734    1/1       Running   0          2h
 registry-console-1-cm8zw   1/1       Running   0          2h
@@ -160,8 +164,10 @@ Notice that the `default` project is in use and the core infrastructure componen
 
 You can also use the `oadm` tool to perform administrative operations:
 
-```
+```bash
 $ oadm new-project test
+```
+```
 Created project test
 ```
 
@@ -187,8 +193,10 @@ oc login $(terraform output master-url)
 
 Now check the address of the Docker Registry. Your Docker Registry url is just your master url with `docker-registry-default.` at the beginning:
 
-```
+```bash
 % echo $(terraform output master-url)
+```
+```
 https://54.85.76.73.xip.io:8443
 ```
 
@@ -200,7 +208,7 @@ You will need to add this registry to the list of untrusted registries. The docu
 
 Finally you can log in. Your Docker Registry username is your OpenShift username (`admin` by default) and your password is your short-lived OpenShift login token, which you can get with `oc whoami -t`:
 
-```
+```bash
 % docker login docker-registry-default.54.85.76.73.xip.io -u admin -p `oc whoami -t`
 Login Succeeded
 ```
@@ -253,7 +261,7 @@ OpenShift 3.5 is fully tested, and has a slightly different setup. You can build
 
 Bring everything down with:
 
-```
+```bash
 terraform destroy
 ```
 
@@ -294,7 +302,7 @@ You can quickly add Splunk to your setup using the Splunk recipe:
 
 To integrate with splunk, merge the `recipes/splunk` branch then run `make splunk` after creating the infrastructure and installing OpenShift:
 
-```
+```bash
 git merge recipes/splunk
 make infracture
 make openshift
@@ -307,8 +315,10 @@ http://www.dwmkerr.com/integrating-openshift-and-splunk-for-logging/
 
 You can quickly rip out container details from the log files with this filter:
 
-```
-source="/var/log/containers/counter-1-*"  | rex field=source "\/var\/log\/containers\/(?<pod>[a-zA-Z0-9-]*)_(?<namespace>[a-zA-Z0-9]*)_(?<container>[a-zA-Z0-9]*)-(?<conatinerid>[a-zA-Z0-9_]*)" | table time, host, namespace, pod, container, log
+```bash
+source="/var/log/containers/counter-1-*" | \
+    rex field=source "\/var\/log\/containers\/(?<pod>[a-zA-Z0-9-]*)_(?<namespace>[a-zA-Z0-9]*)_(?<container>[a-zA-Z0-9]*)-(?<conatinerid>[a-zA-Z0-9_]*)" | \
+    table time, host, namespace, pod, container, log
 ```
 
 ## Troubleshooting
@@ -317,7 +327,7 @@ source="/var/log/containers/counter-1-*"  | rex field=source "\/var\/log\/contai
 
 Ugh, stupid OpenShift docker version vs registry version issue. There's a workaround. First, ssh onto the master:
 
-```
+```bash
 $ ssh -A ec2-user@$(terraform output bastion-public_dns)
 
 $ ssh master.openshift.local
