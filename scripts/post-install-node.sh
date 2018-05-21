@@ -5,7 +5,7 @@
 sudo su
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Post Install: node $(hostname)
+ bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Post Install: \`node\` $(hostname)
 
 # Update the docker config to allow OpenShift's local insecure registry. Also
 # use json-file for logging, so our Splunk forwarder can eat the container logs.
