@@ -75,5 +75,5 @@ systemctl restart docker
 # install scripts on the server.
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 
-curl -s http://toast.sh/helper/slack.sh | \
+curl -s http://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 UP: master $(hostname)
