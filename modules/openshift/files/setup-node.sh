@@ -79,4 +79,4 @@ systemctl restart docker
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 UP: node $(hostname)
+ bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Started: node $(hostname)
