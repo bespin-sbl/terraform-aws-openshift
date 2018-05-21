@@ -76,4 +76,4 @@ systemctl restart docker
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 
 curl -s http://toast.sh/helper/slack.sh | \
-  bash -s -- -u=https://hooks.slack.com/services/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 $(hostname) UP
+ bash -s -- -u=https://hooks.slack.com/services/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 UP: $(hostname)
