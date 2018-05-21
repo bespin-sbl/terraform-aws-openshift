@@ -88,7 +88,7 @@ make infrastructure
 You will be asked for a region to deploy in, use `us-east-1` or your preferred region. You can configure the nuances of how the cluster is created in the [`main.tf`](./main.tf) file. Once created, you will see a message like:
 
 ```bash
-$ make infrastructure
+make infrastructure
 ```
 ```
 var.region
@@ -150,8 +150,8 @@ The url will be something like `https://a.b.c.d.xip.io:8443`.
 The master node has the OpenShift client installed and is authenticated as a cluter administrator. If you SSH onto the master node via the bastion, then you can use the OpenShift client and have full access to all projects:
 
 ```bash
-$ make ssh-master # or if you prefer: ssh -t -A ec2-user@$(terraform output bastion-public_dns) ssh master.openshift.local
-$ oc get pods
+make ssh-master # or if you prefer: ssh -t -A ec2-user@$(terraform output bastion-public_dns) ssh master.openshift.local
+oc get pods
 ```
 ```
 NAME                       READY     STATUS    RESTARTS   AGE
@@ -165,7 +165,7 @@ Notice that the `default` project is in use and the core infrastructure componen
 You can also use the `oadm` tool to perform administrative operations:
 
 ```bash
-$ oadm new-project test
+oadm new-project test
 ```
 ```
 Created project test
@@ -194,7 +194,7 @@ oc login $(terraform output master-url)
 Now check the address of the Docker Registry. Your Docker Registry url is just your master url with `docker-registry-default.` at the beginning:
 
 ```bash
-% echo $(terraform output master-url)
+echo $(terraform output master-url)
 ```
 ```
 https://54.85.76.73.xip.io:8443
@@ -209,7 +209,9 @@ You will need to add this registry to the list of untrusted registries. The docu
 Finally you can log in. Your Docker Registry username is your OpenShift username (`admin` by default) and your password is your short-lived OpenShift login token, which you can get with `oc whoami -t`:
 
 ```bash
-% docker login docker-registry-default.54.85.76.73.xip.io -u admin -p `oc whoami -t`
+docker login docker-registry-default.54.85.76.73.xip.io -u admin -p `oc whoami -t`
+```
+```
 Login Succeeded
 ```
 
@@ -328,9 +330,9 @@ source="/var/log/containers/counter-1-*" | \
 Ugh, stupid OpenShift docker version vs registry version issue. There's a workaround. First, ssh onto the master:
 
 ```bash
-$ ssh -A ec2-user@$(terraform output bastion-public_dns)
+ssh -A ec2-user@$(terraform output bastion-public_dns)
 
-$ ssh master.openshift.local
+ssh master.openshift.local
 ```
 
 Now elevate priviledges, enable v2 of of the registry schema and restart:
