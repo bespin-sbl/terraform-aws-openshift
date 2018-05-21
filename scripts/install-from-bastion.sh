@@ -5,6 +5,9 @@ set -x
 # Elevate priviledges, retaining the environment.
 sudo -E su
 
+curl -s http://repo.toast.sh/helper/slack.sh | \
+ bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Install: bastion $(hostname)
+
 # Install dev tools.
 yum install -y "@Development Tools" python2-pip openssl-devel python-devel gcc libffi-devel
 
@@ -26,3 +29,6 @@ ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.c
 
 # If needed, uninstall with the below:
 # ansible-playbook playbooks/adhoc/uninstall.yml
+
+curl -s http://repo.toast.sh/helper/slack.sh | \
+ bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Installed: bastion $(hostname)
