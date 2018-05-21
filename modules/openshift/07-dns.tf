@@ -56,6 +56,15 @@ resource "aws_route53_record" "master-a-console" {
 }
 resource "aws_route53_record" "master-a-apps" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
+  name = "apps.${data.aws_route53_zone.public.name}"
+  type = "A"
+  ttl  = 300
+  records = [
+    "${aws_instance.master.public_ip}"
+  ]
+}
+resource "aws_route53_record" "master-a-apps-sub" {
+  zone_id = "${data.aws_route53_zone.public.zone_id}"
   name = "*.apps.${data.aws_route53_zone.public.name}"
   type = "A"
   ttl  = 300
