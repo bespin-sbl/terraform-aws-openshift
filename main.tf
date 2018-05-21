@@ -19,7 +19,7 @@ module "openshift" {
   ami_type        = "m4.large"    //  Smallest that meets the min specs for OS
   vpc_cidr        = "10.0.0.0/16"
   subnet_cidr     = "10.0.1.0/24"
-  key_name        = "bespin-sbl"
+  key_name        = "openshift"
   cluster_name    = "openshift"
   cluster_id      = "openshift-${var.region}"
   base_domain     = "opspresso.com"
