@@ -14,7 +14,7 @@ Zone = ${availability_zone}
 EOF
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Start: \`node\` $(hostname)
+ bash -s -- --token=T95EAPLT1/B9CNR2Q9M/0c31312w1aEts55hKVBVFttG Start: \`node\` $(hostname)
 
 # Create initial logs config.
 cat > ./awslogs.conf <<- EOF
@@ -79,4 +79,4 @@ systemctl restart docker
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=T03FUG4UB/B8RQJGNR0/U7LtWJKf8E2gVkh1S1oASlG5 Started: \`node\` $(hostname)
+ bash -s -- --token=T95EAPLT1/B9CNR2Q9M/0c31312w1aEts55hKVBVFttG Started: \`node\` $(hostname)
