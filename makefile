@@ -1,5 +1,4 @@
 infrastructure:
-	# Get the modules, create the infrastructure.
 	terraform init && terraform apply -auto-approve
 
 # Installs OpenShift on the cluster.
@@ -21,7 +20,9 @@ openshift:
 	cat ./scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
 	cat ./scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
 
-# Destroy the infrastructure.
+output:
+	terraform init && terraform output
+
 destroy:
 	terraform init && terraform destroy -auto-approve
 
@@ -32,16 +33,16 @@ browse-openshift:
 # SSH onto the master.
 ssh-bastion:
 	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns)
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns)
 ssh-master:
 	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
 ssh-node1:
 	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
 ssh-node2:
 	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
 
 # Create sample services.
 sample:
