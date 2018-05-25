@@ -32,7 +32,7 @@ resource "aws_subnet" "public" {
   count = "${length(data.aws_availability_zones.azs.names)}"
   availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
 
-  cidr_block = "${cidrsubnet(aws_vpc.openshift.cidr_block, 8, 20 + count.index)}"
+  cidr_block = "${cidrsubnet(aws_vpc.openshift.cidr_block, 8, count.index)}"
   map_public_ip_on_launch = true
 
   //  Use our common tags and add a specific name.
