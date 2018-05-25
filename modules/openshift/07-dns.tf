@@ -3,11 +3,11 @@
 
 //  Create the private DNS.
 resource "aws_route53_zone" "private" {
-  name = "openshift.local"
+  name = "${var.cluster_name}.local"
   comment = "OpenShift Cluster Private DNS"
   vpc_id = "${aws_vpc.openshift.id}"
   tags {
-    Name    = "OpenShift Private DNS"
+    Name    = "${var.cluster_name} Private DNS"
     Project = "openshift"
   }
 }
@@ -45,6 +45,51 @@ resource "aws_route53_record" "node2-a-record" {
 data "aws_route53_zone" "public" {
   name = "${var.base_domain}"
 }
+
+//resource "aws_elb" "public" {
+//  name               = "foobar-terraform-elb"
+//  availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
+//
+//  access_logs {
+//    bucket        = "foo"
+//    bucket_prefix = "bar"
+//    interval      = 60
+//  }
+//
+//  listener {
+//    instance_port     = 8000
+//    instance_protocol = "http"
+//    lb_port           = 80
+//    lb_protocol       = "http"
+//  }
+//
+//  listener {
+//    instance_port      = 8000
+//    instance_protocol  = "http"
+//    lb_port            = 443
+//    lb_protocol        = "https"
+//    ssl_certificate_id = "arn:aws:iam::123456789012:server-certificate/certName"
+//  }
+//
+//  health_check {
+//    healthy_threshold   = 2
+//    unhealthy_threshold = 2
+//    timeout             = 3
+//    target              = "HTTP:8000/"
+//    interval            = 30
+//  }
+//
+//  instances                   = ["${aws_instance.foo.id}"]
+//  cross_zone_load_balancing   = true
+//  idle_timeout                = 400
+//  connection_draining         = true
+//  connection_draining_timeout = 400
+//
+//  tags {
+//    Name = "foobar-terraform-elb"
+//  }
+//}
+
 resource "aws_route53_record" "master-a-console" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name = "console.${data.aws_route53_zone.public.name}"

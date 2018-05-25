@@ -10,8 +10,8 @@ data "template_file" "setup-master" {
 resource "aws_instance" "master" {
   ami                  = "${data.aws_ami.rhel7_5.id}"
   # Master nodes require at least 16GB of memory.
-  instance_type        = "m4.xlarge"
-  subnet_id            = "${aws_subnet.public-subnet.id}"
+  instance_type        = "${var.master_type}"
+  subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
   user_data            = "${data.template_file.setup-master.rendered}"
 
@@ -41,16 +41,17 @@ resource "aws_instance" "master" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "OpenShift Master"
+      "Name", "${var.cluster_name} Master"
     )
   )}"
 }
 
 //  Create the node userdata script.
 data "template_file" "setup-node" {
+  count = "${length(data.aws_availability_zones.azs.names)}"
   template = "${file("${path.module}/files/setup-node.sh")}"
   vars {
-    availability_zone = "${data.aws_availability_zones.azs.names[0]}"
+    availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
   }
 }
 
@@ -58,10 +59,10 @@ data "template_file" "setup-node" {
 //  autoscaling group, but I'm keeping it simple...
 resource "aws_instance" "node1" {
   ami                  = "${data.aws_ami.rhel7_5.id}"
-  instance_type        = "${var.ami_type}"
-  subnet_id            = "${aws_subnet.public-subnet.id}"
+  instance_type        = "${var.node_type}"
+  subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
-  user_data            = "${data.template_file.setup-node.rendered}"
+  user_data            = "${element(data.template_file.setup-node.*.rendered, 0)}"
 
   vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",
@@ -89,16 +90,16 @@ resource "aws_instance" "node1" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "OpenShift Node 1"
+      "Name", "${var.cluster_name} Node 1"
     )
   )}"
 }
 resource "aws_instance" "node2" {
   ami                  = "${data.aws_ami.rhel7_5.id}"
-  instance_type        = "${var.ami_type}"
-  subnet_id            = "${aws_subnet.public-subnet.id}"
+  instance_type        = "${var.node_type}"
+  subnet_id            = "${element(aws_subnet.public.*.id, 1)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
-  user_data            = "${data.template_file.setup-node.rendered}"
+  user_data            = "${element(data.template_file.setup-node.*.rendered, 1)}"
 
   vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",
@@ -126,7 +127,7 @@ resource "aws_instance" "node2" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "OpenShift Node 2"
+      "Name", "${var.cluster_name} Node 2"
     )
   )}"
 }

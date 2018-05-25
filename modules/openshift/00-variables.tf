@@ -2,16 +2,16 @@ variable "region" {
   description = "The region to deploy the cluster in, e.g: us-east-1"
 }
 
-variable "ami_type" {
+variable "master_type" {
+  description = "The size of the cluster nodes, e.g: m4.large. Note that OpenShift will not run on anything smaller than m4.large"
+}
+
+variable "node_type" {
   description = "The size of the cluster nodes, e.g: m4.large. Note that OpenShift will not run on anything smaller than m4.large"
 }
 
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC, e.g: 10.0.0.0/16"
-}
-
-variable "subnet_cidr" {
-  description = "The CIDR block for the public subnet, e.g: 10.0.1.0/24"
 }
 
 variable "key_name" {

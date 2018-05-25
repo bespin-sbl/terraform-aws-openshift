@@ -2,6 +2,8 @@
 
 cd ~/terraform-aws-openshift
 
+eval `ssh-agent -s`
+
 V=$1
 
 echo "" > /tmp/make-${V}.log

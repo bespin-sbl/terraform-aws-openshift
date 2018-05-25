@@ -7,7 +7,7 @@ resource "aws_vpc" "openshift" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "OpenShift VPC"
+      "Name", "${var.cluster_name} VPC"
     )
   )}"
 }
@@ -20,24 +20,26 @@ resource "aws_internet_gateway" "openshift" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "OpenShift IGW"
+      "Name", "${var.cluster_name} IGW"
     )
   )}"
 }
 
 //  Create a public subnet.
-resource "aws_subnet" "public-subnet" {
-  vpc_id                  = "${aws_vpc.openshift.id}"
-  cidr_block              = "${var.subnet_cidr}"
-  availability_zone       = "${data.aws_availability_zones.azs.names[0]}"
+resource "aws_subnet" "public" {
+  vpc_id = "${aws_vpc.openshift.id}"
+
+  count = "${length(data.aws_availability_zones.azs.names)}"
+  availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+
+  cidr_block = "${cidrsubnet(aws_vpc.openshift.cidr_block, 8, 20 + count.index)}"
   map_public_ip_on_launch = true
-  depends_on              = ["aws_internet_gateway.openshift"]
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "OpenShift Public Subnet"
+      "Name", "${var.cluster_name} Public Subnet"
     )
   )}"
 }
@@ -55,14 +57,15 @@ resource "aws_route_table" "public" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "OpenShift Public Route Table"
+      "Name", "${var.cluster_name} Public Route Table"
     )
   )}"
 }
 
 //  Now associate the route table with the public subnet - giving
 //  all public subnet instances access to the internet.
-resource "aws_route_table_association" "public-subnet" {
-  subnet_id      = "${aws_subnet.public-subnet.id}"
+resource "aws_route_table_association" "public" {
+  count = "${length(data.aws_availability_zones.azs.names)}"
+  subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }

@@ -16,9 +16,9 @@ provider "aws" {
 module "openshift" {
   source          = "./modules/openshift"
   region          = "${var.region}"
-  ami_type        = "m4.large"    //  Smallest that meets the min specs for OS
+  master_type     = "m4.xlarge"
+  node_type       = "m4.xlarge"
   vpc_cidr        = "10.0.0.0/16"
-  subnet_cidr     = "10.0.1.0/24"
   key_name        = "openshift"
   cluster_name    = "openshift"
   cluster_id      = "openshift-${var.region}"
@@ -30,9 +30,6 @@ output "console-url" {
   value = "https://${module.openshift.public_console}:8443"
 }
 
-//output "master-url" {
-//  value = "https://${module.openshift.master-public_ip}.xip.io:8443"
-//}
 output "master-public_dns" {
   value = "${module.openshift.master-public_dns}"
 }
