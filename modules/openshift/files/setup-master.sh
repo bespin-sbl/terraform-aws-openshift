@@ -17,7 +17,7 @@ curl -s http://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=T95EAPLT1/B9CNR2Q9M/0c31312w1aEts55hKVBVFttG Start: \`master\` $(hostname)
 
 # Create initial logs config.
-cat > ./awslogs.conf << EOF
+cat > ./awslogs.conf <<- EOF
 [general]
 state_file = /var/awslogs/state/agent-state
 
