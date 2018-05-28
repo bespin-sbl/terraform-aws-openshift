@@ -83,52 +83,45 @@ resource "aws_security_group" "openshift-public-egress" {
   description = "Security group that allows egress to the internet for instances over HTTP and HTTPS."
   vpc_id      = "${aws_vpc.openshift.id}"
 
+  //  SSH
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-//  //  SSH
-//  egress {
-//    from_port   = 22
-//    to_port     = 22
-//    protocol    = "tcp"
-//    cidr_blocks = ["0.0.0.0/0"]
-//  }
+  //  HTTP
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-//  //  HTTP
-//  egress {
-//    from_port   = 80
-//    to_port     = 80
-//    protocol    = "tcp"
-//    cidr_blocks = ["0.0.0.0/0"]
-//  }
+  //  HTTPS
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-//  //  HTTPS
-//  egress {
-//    from_port   = 443
-//    to_port     = 443
-//    protocol    = "tcp"
-//    cidr_blocks = ["0.0.0.0/0"]
-//  }
+  //  Bitbucket HTTPS
+  egress {
+    from_port   = 7990
+    to_port     = 7990
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-//  //  Bitbucket HTTPS
-//  egress {
-//    from_port   = 7990
-//    to_port     = 7990
-//    protocol    = "tcp"
-//    cidr_blocks = ["0.0.0.0/0"]
-//  }
-
-//  //  Bitbucket SSH
-//  egress {
-//    from_port   = 7999
-//    to_port     = 7990
-//    protocol    = "tcp"
-//    cidr_blocks = ["0.0.0.0/0"]
-//  }
+  //  Bitbucket SSH
+  egress {
+    from_port   = 7999
+    to_port     = 7999
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
