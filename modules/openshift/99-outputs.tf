@@ -7,7 +7,7 @@ output "master-public_dns" {
   value = "${aws_instance.master.public_dns}"
 }
 output "master-public_ip" {
-  value = "${aws_instance.master.public_ip}"
+  value = "${var.master_eip == "" ? aws_eip.master.public_ip : data.aws_eip.master.public_ip}"
 }
 output "master-private_dns" {
   value = "${aws_instance.master.private_dns}"
