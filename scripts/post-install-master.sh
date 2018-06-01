@@ -8,7 +8,7 @@ curl -s http://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Post Install: \`master\` $(hostname)
 
 # Create an htpasswd file, we'll use htpasswd auth for OpenShift.
-htpasswd -cb /etc/origin/master/htpasswd developer password#123
+htpasswd -cb /etc/origin/master/htpasswd admin password#123
 
 # Update the docker config to allow OpenShift's local insecure registry. Also
 # use json-file for logging, so our Splunk forwarder can eat the container logs.
