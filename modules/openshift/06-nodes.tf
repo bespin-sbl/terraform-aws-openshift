@@ -56,13 +56,15 @@ data "aws_eip" "master" {
   count = "${var.master_eip == "" ? 0 : 1}"
   public_ip = "${var.master_eip}"
 }
+resource "aws_eip_association" "master" {
+  count = "${var.master_eip == "" ? 0 : 1}"
+  instance_id   = "${aws_instance.master.id}"
+  allocation_id = "${element(data.aws_eip.master.*.id, 0)}"
+}
 resource "aws_eip" "master" {
   count = "${var.master_eip == "" ? 1 : 0}"
+  instance = "${aws_instance.master.id}"
   vpc = true
-}
-resource "aws_eip_association" "master" {
-  instance_id   = "${aws_instance.master.id}"
-  allocation_id = "${var.master_eip == "" ? element(aws_eip.master.*.id, 0) : element(data.aws_eip.master.*.id, 0)}"
 }
 
 //  Create the node userdata script.
