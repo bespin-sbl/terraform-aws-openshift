@@ -161,9 +161,9 @@ resource "aws_eip" "node" {
 }
 resource "aws_eip_association" "node1" {
   instance_id   = "${aws_instance.node1.id}"
-  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.allocation_id, 0) : element(data.aws_eip.node.*.id, 0)}"
+  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.id, 0) : element(data.aws_eip.node.*.id, 0)}"
 }
 resource "aws_eip_association" "node2" {
   instance_id   = "${aws_instance.node2.id}"
-  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.allocation_id, 1) : element(data.aws_eip.node.*.id, 1)}"
+  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.id, 1) : element(data.aws_eip.node.*.id, 1)}"
 }
