@@ -21,9 +21,9 @@ module "openshift" {
   cluster_name    = "openshift"
   cluster_id      = "openshift-${var.region}"
   master_type     = "m4.xlarge"
-  //master_eip      = "1.1.1.1"
+  master_eip      = "13.124.156.189"
   node_type       = "m4.xlarge"
-  //node_eips       = ["1.1.1.1","2.2.2.2"]
+  node_eips       = ["52.78.129.182","52.78.231.138"]
   //vpc_id          = ""
   vpc_cidr        = "10.0.0.0/16"
   key_name        = "openshift"
