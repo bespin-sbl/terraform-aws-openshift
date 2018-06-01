@@ -1,5 +1,7 @@
 //  Define the VPC.
 resource "aws_vpc" "openshift" {
+  count = "${var.vpc_id == "" ? 1 : 0}"
+
   cidr_block = "${var.vpc_cidr}"
   enable_dns_hostnames = true
 
@@ -12,13 +14,17 @@ resource "aws_vpc" "openshift" {
   )}"
 }
 
+data "aws_vpc" "openshift" {
+  id = "${var.vpc_id == "" ? aws_vpc.openshift.id : var.vpc_id}"
+}
+
 //  Create a public subnet.
 resource "aws_subnet" "public" {
-  vpc_id = "${aws_vpc.openshift.id}"
+  vpc_id = "${data.aws_vpc.openshift.id}"
 
   count = "${length(data.aws_availability_zones.azs.names)}"
 
-  cidr_block = "${cidrsubnet(aws_vpc.openshift.cidr_block, 8, 1 + count.index)}"
+  cidr_block = "${cidrsubnet(data.aws_vpc.openshift.cidr_block, 8, 31 + count.index)}"
   availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
   map_public_ip_on_launch = true
 
@@ -33,7 +39,7 @@ resource "aws_subnet" "public" {
 
 //  Create an Internet Gateway for the VPC.
 resource "aws_internet_gateway" "public" {
-  vpc_id = "${aws_vpc.openshift.id}"
+  vpc_id = "${data.aws_vpc.openshift.id}"
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
@@ -77,7 +83,7 @@ resource "aws_internet_gateway" "public" {
 
 //  Create a route table allowing all addresses access to the NAT.
 resource "aws_route_table" "public" {
-  vpc_id = "${aws_vpc.openshift.id}"
+  vpc_id = "${data.aws_vpc.openshift.id}"
 
   route {
     cidr_block = "0.0.0.0/0"

@@ -5,7 +5,7 @@
 resource "aws_route53_zone" "private" {
   name = "${var.cluster_name}.local"
   comment = "OpenShift Cluster Private DNS"
-  vpc_id = "${aws_vpc.openshift.id}"
+  vpc_id = "${data.aws_vpc.openshift.id}"
   tags {
     Name    = "${var.cluster_name} Private DNS"
     Project = "openshift"

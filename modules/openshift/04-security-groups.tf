@@ -3,7 +3,7 @@
 resource "aws_security_group" "openshift-vpc" {
   name        = "${var.cluster_name}-vpc"
   description = "Default security group that allows all instances in the VPC to talk to each other over any port and protocol."
-  vpc_id      = "${aws_vpc.openshift.id}"
+  vpc_id      = "${data.aws_vpc.openshift.id}"
 
   ingress {
     from_port = "0"
@@ -33,7 +33,7 @@ resource "aws_security_group" "openshift-vpc" {
 resource "aws_security_group" "openshift-public-ingress" {
   name        = "${var.cluster_name}-public-ingress"
   description = "Security group that allows public ingress to instances, HTTP, HTTPS and more."
-  vpc_id      = "${aws_vpc.openshift.id}"
+  vpc_id      = "${data.aws_vpc.openshift.id}"
 
   //  HTTP
   ingress {
@@ -81,7 +81,7 @@ resource "aws_security_group" "openshift-public-ingress" {
 resource "aws_security_group" "openshift-public-egress" {
   name        = "${var.cluster_name}-public-egress"
   description = "Security group that allows egress to the internet for instances over HTTP and HTTPS."
-  vpc_id      = "${aws_vpc.openshift.id}"
+  vpc_id      = "${data.aws_vpc.openshift.id}"
 
   //  SSH
   egress {
@@ -136,7 +136,7 @@ resource "aws_security_group" "openshift-public-egress" {
 resource "aws_security_group" "openshift-ssh" {
   name        = "${var.cluster_name}-ssh"
   description = "Security group that allows public ingress over SSH."
-  vpc_id      = "${aws_vpc.openshift.id}"
+  vpc_id      = "${data.aws_vpc.openshift.id}"
 
   //  SSH
   ingress {
