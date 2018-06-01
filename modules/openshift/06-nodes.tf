@@ -31,6 +31,14 @@ resource "aws_instance" "master" {
   root_block_device {
     volume_size = 50
     volume_type = "gp2"
+
+    //  Use our common tags and add a specific name.
+    tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Master"
+    )
+  )}"
   }
 
   # Storage for Docker, see:
@@ -39,6 +47,14 @@ resource "aws_instance" "master" {
     device_name = "/dev/sdf"
     volume_size = 80
     volume_type = "gp2"
+
+    //  Use our common tags and add a specific name.
+    tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Master"
+    )
+  )}"
   }
 
   key_name = "${aws_key_pair.openshift.key_name}"
@@ -93,6 +109,14 @@ resource "aws_instance" "node1" {
   root_block_device {
     volume_size = 50
     volume_type = "gp2"
+
+    //  Use our common tags and add a specific name.
+    tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Node 1"
+    )
+  )}"
   }
 
   # Storage for Docker, see:
@@ -101,6 +125,14 @@ resource "aws_instance" "node1" {
     device_name = "/dev/sdf"
     volume_size = 80
     volume_type = "gp2"
+
+    //  Use our common tags and add a specific name.
+    tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Node 1"
+    )
+  )}"
   }
 
   key_name = "${aws_key_pair.openshift.key_name}"
@@ -130,6 +162,14 @@ resource "aws_instance" "node2" {
   root_block_device {
     volume_size = 50
     volume_type = "gp2"
+
+    //  Use our common tags and add a specific name.
+    tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Node 2"
+    )
+  )}"
   }
 
   # Storage for Docker, see:
@@ -138,6 +178,14 @@ resource "aws_instance" "node2" {
     device_name = "/dev/sdf"
     volume_size = 80
     volume_type = "gp2"
+
+    //  Use our common tags and add a specific name.
+    tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Node 2"
+    )
+  )}"
   }
 
   key_name = "${aws_key_pair.openshift.key_name}"
