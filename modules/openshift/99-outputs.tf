@@ -20,7 +20,7 @@ output "node1-public_dns" {
   value = "${aws_instance.node1.public_dns}"
 }
 output "node1-public_ip" {
-  value = "${aws_instance.node1.public_ip}"
+  value = "${length(var.node_eip) < 2 ? aws_eip.node1.public_ip : data.aws_eip.node1.public_ip}"
 }
 output "node1-private_dns" {
   value = "${aws_instance.node1.private_dns}"
@@ -33,7 +33,7 @@ output "node2-public_dns" {
   value = "${aws_instance.node2.public_dns}"
 }
 output "node2-public_ip" {
-  value = "${aws_instance.node2.public_ip}"
+  value = "${length(var.node_eip) < 2 ? aws_eip.node2.public_ip : data.aws_eip.node2.public_ip}"
 }
 output "node2-private_dns" {
   value = "${aws_instance.node2.private_dns}"
