@@ -159,7 +159,7 @@ data "aws_eip" "node1" {
 }
 resource "aws_eip_association" "node1" {
   instance_id   = "${aws_instance.node1.id}"
-  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node1.*.id, 0) : element(data.aws_eip.node1.*.id, 0)}"
+  allocation_id = "${element(data.aws_eip.node1.*.id, 0)}"
 }
 resource "aws_eip" "node1" {
   count = "${length(var.node_eip) < 2 ? 1 : 0}"
