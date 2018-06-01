@@ -15,17 +15,17 @@ variable "master_type" {
   default = "m4.large"
 }
 
-variable "master_eip" {
-  description = "The ip of the cluster master instance e-ip."
-  default = ""
-}
-
 variable "node_type" {
   description = "The size of the cluster nodes, e.g: m4.large. Note that OpenShift will not run on anything smaller than m4.large"
   default = "m4.large"
 }
 
-variable "node_eips" {
+variable "master_eip" {
+  description = "The ip of the cluster master instance e-ip."
+  default = ""
+}
+
+variable "node_eip" {
   description = "The ips of the cluster nodes instance e-ip."
   type = "list"
   default = []

@@ -21,10 +21,10 @@ module "openshift" {
   cluster_name    = "openshift"
   cluster_id      = "openshift-${var.region}"
   master_type     = "m4.xlarge"
-  //master_eip      = "13.124.156.189"
   node_type       = "m4.xlarge"
-  //node_eips       = ["52.78.129.182","52.78.231.138"]
-  //vpc_id          = ""
+  //master_eip      = "13.124.156.189"
+  //node_eip        = ["52.78.129.182","52.78.231.138"]
+  //vpc_id          = "vpc-string"
   vpc_cidr        = "10.0.0.0/16"
   key_name        = "openshift"
   public_key_path = "~/.ssh/id_rsa.pub"

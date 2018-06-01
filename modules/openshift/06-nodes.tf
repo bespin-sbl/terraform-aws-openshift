@@ -152,18 +152,18 @@ resource "aws_instance" "node2" {
 }
 
 data "aws_eip" "node" {
-  count = "${length(var.node_eips) < 2 ? 0 : 2}"
-  public_ip = "${element(var.node_eips, count.index)}"
+  count = "${length(var.node_eip) < 2 ? 0 : 2}"
+  public_ip = "${element(var.node_eip, count.index)}"
 }
 resource "aws_eip" "node" {
-  count = "${length(var.node_eips) < 2 ? 2 : 0}"
+  count = "${length(var.node_eip) < 2 ? 2 : 0}"
   vpc = true
 }
 resource "aws_eip_association" "node1" {
   instance_id   = "${aws_instance.node1.id}"
-  allocation_id = "${length(var.node_eips) < 2 ? element(aws_eip.node.*.id, 0) : element(data.aws_eip.node.*.id, 0)}"
+  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.id, 0) : element(data.aws_eip.node.*.id, 0)}"
 }
 resource "aws_eip_association" "node2" {
   instance_id   = "${aws_instance.node2.id}"
-  allocation_id = "${length(var.node_eips) < 2 ? element(aws_eip.node.*.id, 1) : element(data.aws_eip.node.*.id, 1)}"
+  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.id, 1) : element(data.aws_eip.node.*.id, 1)}"
 }
