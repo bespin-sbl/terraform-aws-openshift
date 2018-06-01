@@ -65,6 +65,14 @@ resource "aws_eip" "master" {
   count = "${var.master_eip == "" ? 1 : 0}"
   instance = "${aws_instance.master.id}"
   vpc = true
+
+  //  Use our common tags and add a specific name.
+  tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Master"
+    )
+  )}"
 }
 
 //  Create the node userdata script.
@@ -165,6 +173,14 @@ resource "aws_eip" "node1" {
   count = "${length(var.node_eip) < 2 ? 1 : 0}"
   instance = "${aws_instance.node1.id}"
   vpc = true
+
+  //  Use our common tags and add a specific name.
+  tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Node 1"
+    )
+  )}"
 }
 
 data "aws_eip" "node2" {
@@ -179,4 +195,12 @@ resource "aws_eip" "node2" {
   count = "${length(var.node_eip) < 2 ? 1 : 0}"
   instance = "${aws_instance.node2.id}"
   vpc = true
+
+  //  Use our common tags and add a specific name.
+  tags = "${merge(
+    local.common_tags,
+    map(
+      "Name", "${var.cluster_name} Node 2"
+    )
+  )}"
 }
