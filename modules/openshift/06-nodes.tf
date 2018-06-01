@@ -163,7 +163,7 @@ resource "aws_instance" "node2" {
 
 data "aws_eip" "node1" {
   count = "${length(var.node_eip) < 2 ? 0 : 1}"
-  public_ip = "${element(var.node_eip, count.index)}"
+  public_ip = "${element(var.node_eip, 0)}"
 }
 resource "aws_eip_association" "node1" {
   instance_id   = "${aws_instance.node1.id}"
@@ -185,7 +185,7 @@ resource "aws_eip" "node1" {
 
 data "aws_eip" "node2" {
   count = "${length(var.node_eip) < 2 ? 0 : 1}"
-  public_ip = "${element(var.node_eip, count.index)}"
+  public_ip = "${element(var.node_eip, 1)}"
 }
 resource "aws_eip_association" "node2" {
   instance_id   = "${aws_instance.node2.id}"
