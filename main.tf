@@ -24,7 +24,7 @@ module "openshift" {
   node_type       = "m4.xlarge"
   //master_eip      = "13.124.156.189"
   //node_eip        = ["52.78.129.182","52.78.231.138"]
-  //vpc_id          = "vpc-string"
+  //vpc_id          = "vpc-0099424d46e49c8c1"
   vpc_cidr        = "10.0.0.0/16"
   key_name        = "openshift"
   public_key_path = "~/.ssh/id_rsa.pub"
