@@ -53,7 +53,7 @@ resource "aws_instance" "master" {
 }
 
 data "aws_eip" "master" {
-  count = "${var.master_eip != "" ? 1 : 0}"
+  count = "${var.master_eip == "" ? 0 : 1}"
   public_ip = "${var.master_eip}"
 }
 resource "aws_eip" "master" {
