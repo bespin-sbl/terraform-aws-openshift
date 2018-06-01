@@ -62,7 +62,7 @@ resource "aws_eip" "master" {
 }
 resource "aws_eip_association" "master" {
   instance_id   = "${aws_instance.master.id}"
-  allocation_id = "${var.master_eip == "" ? aws_eip.master.id : data.aws_eip.master.id}"
+  allocation_id = "${var.master_eip == "" ? element(aws_eip.master.*.id, 0) : element(data.aws_eip.master.*.id, 0)}"
 }
 
 //  Create the node userdata script.
