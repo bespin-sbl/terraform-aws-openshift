@@ -7,7 +7,7 @@ output "master-public_dns" {
   value = "${aws_instance.master.public_dns}"
 }
 output "master-public_ip" {
-  value = "${var.master_eip == "" ? aws_eip.master.public_ip : var.master_eip}"
+  value = "${var.master_eip == "" ? aws_eip.master.*.public_ip[0] : var.master_eip}"
 }
 output "master-private_dns" {
   value = "${aws_instance.master.private_dns}"
@@ -20,7 +20,7 @@ output "node1-public_dns" {
   value = "${aws_instance.node1.public_dns}"
 }
 output "node1-public_ip" {
-  value = "${length(var.node_eip) < 2 ? aws_eip.node1.public_ip : var.node_eip[0]}"
+  value = "${length(var.node_eip) < 2 ? aws_eip.node1.*.public_ip[0] : var.node_eip[0]}"
 }
 output "node1-private_dns" {
   value = "${aws_instance.node1.private_dns}"
@@ -33,7 +33,7 @@ output "node2-public_dns" {
   value = "${aws_instance.node2.public_dns}"
 }
 output "node2-public_ip" {
-  value = "${length(var.node_eip) < 2 ? aws_eip.node2.public_ip : var.node_eip[1]}"
+  value = "${length(var.node_eip) < 2 ? aws_eip.node2.*.public_ip[0] : var.node_eip[1]}"
 }
 output "node2-private_dns" {
   value = "${aws_instance.node2.private_dns}"
