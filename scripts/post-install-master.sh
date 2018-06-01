@@ -14,4 +14,4 @@ sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/
 systemctl restart docker
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Post --color=good Installed: \`master\` $(hostname)
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Post Installed: \`master\` $(hostname)
