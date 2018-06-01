@@ -53,8 +53,8 @@ resource "aws_instance" "master" {
 }
 
 data "aws_eip" "master" {
-  count = "${var.master_eip == "" ? 0 : 1}"
-  public_ip = "${var.master_eip}"
+  //count = "${var.master_eip == "" ? 0 : 1}"
+  public_ip = "${var.master_eip == "" ? aws_eip.master.public_ip : var.master_eip}"
 }
 resource "aws_eip_association" "master" {
   count = "${var.master_eip == "" ? 0 : 1}"
@@ -162,8 +162,8 @@ resource "aws_instance" "node2" {
 }
 
 data "aws_eip" "node1" {
-  count = "${length(var.node_eip) < 2 ? 0 : 1}"
-  public_ip = "${element(var.node_eip, 0)}"
+  //count = "${length(var.node_eip) < 2 ? 0 : 1}"
+  public_ip = "${length(var.node_eip) < 2 ? aws_eip.node1.public_ip : element(var.node_eip, 0)}"
 }
 resource "aws_eip_association" "node1" {
   count = "${length(var.node_eip) < 2 ? 0 : 1}"
@@ -185,8 +185,8 @@ resource "aws_eip" "node1" {
 }
 
 data "aws_eip" "node2" {
-  count = "${length(var.node_eip) < 2 ? 0 : 1}"
-  public_ip = "${element(var.node_eip, 1)}"
+  //count = "${length(var.node_eip) < 2 ? 0 : 1}"
+  public_ip = "${length(var.node_eip) < 2 ? aws_eip.node2.public_ip : element(var.node_eip, 1)}"
 }
 resource "aws_eip_association" "node2" {
   count = "${length(var.node_eip) < 2 ? 0 : 1}"
