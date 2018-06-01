@@ -1,6 +1,6 @@
 //  Output some useful variables for quick SSH access etc.
 output "public_console" {
-  value = "${aws_route53_record.master-a-console.name}"
+  value = "${var.base_domain != "" ? data.null_data_source.console.outputs["dom"] : data.null_data_source.console.outputs["xip"]}"
 }
 
 output "master-public_dns" {

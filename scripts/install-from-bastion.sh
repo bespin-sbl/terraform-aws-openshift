@@ -6,7 +6,7 @@ set -x
 sudo -E su
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=T95EAPLT1/B9CNR2Q9M/0c31312w1aEts55hKVBVFttG Install: \`bastion\` $(hostname)
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Install: \`bastion\` $(hostname)
 
 # Install dev tools.
 yum install -y "@Development Tools" python2-pip openssl-devel python-devel gcc libffi-devel
@@ -31,4 +31,4 @@ ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.c
 # ansible-playbook playbooks/adhoc/uninstall.yml
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=T95EAPLT1/B9CNR2Q9M/0c31312w1aEts55hKVBVFttG Installed: \`bastion\` $(hostname)
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Installed: \`bastion\` $(hostname)

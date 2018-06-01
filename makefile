@@ -5,7 +5,7 @@ infrastructure:
 openshift:
 	# Add our identity for ssh, add the host key to avoid having to accept the
 	# the host key manually. Also add the identity of each node to the bastion.
-	ssh-add -t 6000 ~/.ssh/openshift.pem
+	ssh-add ~/.ssh/id_rsa
 	ssh-keyscan -t rsa -H $$(terraform output bastion-public_dns) >> ~/.ssh/known_hosts
 	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H master.openshift.local >> ~/.ssh/known_hosts"
 	ssh -A ec2-user@$$(terraform output bastion-public_dns) "ssh-keyscan -t rsa -H node1.openshift.local >> ~/.ssh/known_hosts"
@@ -32,17 +32,13 @@ browse-openshift:
 
 # SSH onto the master.
 ssh-bastion:
-	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns)
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns)
 ssh-master:
-	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
 ssh-node1:
-	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
 ssh-node2:
-	ssh-add -t 10 ~/.ssh/openshift.pem
-	ssh -t -i ~/.ssh/openshift.pem -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
 
 # Create sample services.
 sample:

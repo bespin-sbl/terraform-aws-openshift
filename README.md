@@ -69,8 +69,7 @@ aws s3 mb s3://terraform-state-openshift --region us-east-1
 ```
 4. Creates a RSA key pair.
 ```bash
-aws ec2 create-key-pair --key-name openshift | grep "BEGIN RSA PRIVATE KEY" | cut -d'"' -f4 | sed 's/\\n/\n/g' > ~/.ssh/openshift.pem
-chmod 600 ~/.ssh/openshift.pem
+ssh-keygen -q -f ~/.ssh/id_rsa -N ''
 ```
 
 ## Creating the Cluster

@@ -3,6 +3,8 @@ terraform {
   backend "s3" {
     region = "ap-northeast-2"
     bucket = "terraform-state-bespin-sbl-seoul"
+    //bucket = "terraform-state-bespin-poc-seoul"
+    //bucket = "terraform-nalbam-seoul"
     key = "openshift.tfstate"
   }
 }
@@ -16,12 +18,13 @@ provider "aws" {
 module "openshift" {
   source          = "./modules/openshift"
   region          = "${var.region}"
+  cluster_name    = "openshift"
+  cluster_id      = "openshift-${var.region}"
   master_type     = "m4.xlarge"
   node_type       = "m4.xlarge"
   vpc_cidr        = "10.0.0.0/16"
   key_name        = "openshift"
-  cluster_name    = "openshift"
-  cluster_id      = "openshift-${var.region}"
+  public_key_path = "~/.ssh/id_rsa.pub"
   base_domain     = "opspresso.com"
 }
 

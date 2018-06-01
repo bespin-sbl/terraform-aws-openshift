@@ -5,7 +5,7 @@
 sudo su
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=T95EAPLT1/B9CNR2Q9M/0c31312w1aEts55hKVBVFttG Post Install: \`master\` $(hostname)
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Post Install: \`master\` $(hostname)
 
 # Create an htpasswd file, we'll use htpasswd auth for OpenShift.
 htpasswd -cb /etc/origin/master/htpasswd developer password#123
