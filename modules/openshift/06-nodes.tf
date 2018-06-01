@@ -53,11 +53,11 @@ resource "aws_instance" "master" {
 }
 
 data "aws_eip" "master" {
-  count = "${var.master_eip == "" ? 1 : 0}"
+  count = "${var.master_eip != "" ? 1 : 0}"
   public_ip = "${var.master_eip}"
 }
 resource "aws_eip_association" "master" {
-  count = "${var.master_eip == "" ? 1 : 0}"
+  count = "${var.master_eip != "" ? 1 : 0}"
   instance_id   = "${aws_instance.master.id}"
   allocation_id = "${data.aws_eip.master.id}"
 }
