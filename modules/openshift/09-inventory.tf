@@ -1,8 +1,16 @@
-//  Console domain.
+//  Console EIP.
+data "null_data_source" "eip" {
+  inputs = {
+    a = "${aws_eip.master.public_ip}"
+    b = "${data.aws_eip.master.public_ip}"
+  }
+}
+
+//  Base domain.
 data "null_data_source" "domain" {
   inputs = {
     dom = "${var.base_domain}"
-    xip = "${var.master_eip == "" ? aws_eip.master.public_ip : data.aws_eip.master.public_ip}.xip.io"
+    xip = "${var.master_eip == "" ? data.null_data_source.eip.outputs["a"] : data.null_data_source.eip.outputs["b"]}.xip.io"
   }
 }
 
