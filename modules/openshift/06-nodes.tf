@@ -52,6 +52,16 @@ resource "aws_instance" "master" {
   )}"
 }
 
+data "aws_eip" "master" {
+  count = "${var.master_eip == "" ? 1 : 0}"
+  public_ip = "${var.master_eip}"
+}
+resource "aws_eip_association" "master" {
+  count = "${var.master_eip == "" ? 1 : 0}"
+  instance_id   = "${aws_instance.master.id}"
+  allocation_id = "${data.aws_eip.master.id}"
+}
+
 //  Create the node userdata script.
 data "template_file" "setup-node" {
   count = "${length(data.aws_availability_zones.azs.names)}"
@@ -136,4 +146,19 @@ resource "aws_instance" "node2" {
       "Name", "${var.cluster_name} Node 2"
     )
   )}"
+}
+
+data "aws_eip" "node" {
+  count = "${length(var.node_eips)}"
+  public_ip = "${element(var.node_eips, count.index)}"
+}
+resource "aws_eip_association" "node1" {
+  count = "${length(var.node_eips) > 0 ? 1 : 0}"
+  instance_id   = "${aws_instance.node1.id}"
+  allocation_id = "${element(data.aws_eip.node.*.id, 0)}"
+}
+resource "aws_eip_association" "node2" {
+  count = "${length(var.node_eips) > 1 ? 1 : 0}"
+  instance_id   = "${aws_instance.node2.id}"
+  allocation_id = "${element(data.aws_eip.node.*.id, 1)}"
 }
