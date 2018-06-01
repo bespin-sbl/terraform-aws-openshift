@@ -2,7 +2,7 @@
 data "null_data_source" "domain" {
   inputs = {
     dom = "${var.base_domain}"
-    xip = "${var.master_eip == "" ? aws_eip.master.public_ip : var.master_eip}.xip.io"
+    xip = "${var.master_eip == "" ? element(aws_eip.master.*.public_ip, 0) : var.master_eip}.xip.io"
   }
 }
 
