@@ -1,6 +1,6 @@
 //  Output some useful variables for quick SSH access etc.
 output "public_console" {
-  value = "${var.base_domain != "" ? data.null_data_source.console.outputs["dom"] : data.null_data_source.console.outputs["xip"]}"
+  value = "console.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
 }
 
 output "master-public_dns" {
