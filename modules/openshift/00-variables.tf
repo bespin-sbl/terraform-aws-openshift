@@ -20,17 +20,6 @@ variable "node_type" {
   default = "m4.large"
 }
 
-variable "master_eip" {
-  description = "The ip of the cluster master instance e-ip."
-  default = ""
-}
-
-variable "node_eip" {
-  description = "The ips of the cluster nodes instance e-ip."
-  type = "list"
-  default = []
-}
-
 variable "vpc_id" {
   description = "The VPC ID."
   default = ""

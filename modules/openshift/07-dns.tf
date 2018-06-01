@@ -54,7 +54,7 @@ resource "aws_route53_record" "console" {
   type = "A"
   ttl  = 300
   records = [
-    "${data.aws_eip.master.public_ip}"
+    "${aws_eip.master.public_ip}"
   ]
 }
 resource "aws_route53_record" "apps" {
@@ -64,6 +64,6 @@ resource "aws_route53_record" "apps" {
   type = "A"
   ttl  = 300
   records = [
-    "${data.aws_eip.master.public_ip}"
+    "${aws_eip.master.public_ip}"
   ]
 }

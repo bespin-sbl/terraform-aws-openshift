@@ -22,8 +22,6 @@ module "openshift" {
   cluster_id      = "openshift-${var.region}"
   master_type     = "m4.xlarge"
   node_type       = "m4.xlarge"
-  //master_eip      = "13.124.156.189"
-  //node_eip        = ["52.78.129.182","52.78.231.138"]
   //vpc_id          = "vpc-0099424d46e49c8c1"
   vpc_cidr        = "10.0.0.0/16"
   key_name        = "openshift"
@@ -41,6 +39,20 @@ output "master-public_dns" {
 }
 output "master-public_ip" {
   value = "${module.openshift.master-public_ip}"
+}
+
+output "master-node1_dns" {
+  value = "${module.openshift.node1-public_dns}"
+}
+output "master-node1_ip" {
+  value = "${module.openshift.node1-public_ip}"
+}
+
+output "master-node2_dns" {
+  value = "${module.openshift.node2-public_dns}"
+}
+output "master-node2_ip" {
+  value = "${module.openshift.node2-public_ip}"
 }
 
 output "bastion-public_dns" {
