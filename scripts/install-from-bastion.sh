@@ -31,4 +31,4 @@ ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.c
 # ansible-playbook playbooks/adhoc/uninstall.yml
 
 curl -s http://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Installed: \`bastion\` $(hostname)
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Installed: \`bastion\` $(hostname)
