@@ -62,7 +62,7 @@ resource "aws_eip" "master" {
 }
 resource "aws_eip_association" "master" {
   instance_id   = "${aws_instance.master.id}"
-  allocation_id = "${var.master_eip == "" ? aws_eip.master.id : data.aws_eip.master.id}"
+  allocation_id = "${var.master_eip == "" ? aws_eip.master.allocation_id : data.aws_eip.master.id}"
 }
 
 //  Create the node userdata script.
@@ -161,9 +161,9 @@ resource "aws_eip" "node" {
 }
 resource "aws_eip_association" "node1" {
   instance_id   = "${aws_instance.node1.id}"
-  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.id, 0) : element(data.aws_eip.node.*.id, 0)}"
+  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.allocation_id, 0) : element(data.aws_eip.node.*.id, 0)}"
 }
 resource "aws_eip_association" "node2" {
   instance_id   = "${aws_instance.node2.id}"
-  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.id, 1) : element(data.aws_eip.node.*.id, 1)}"
+  allocation_id = "${length(var.node_eip) < 2 ? element(aws_eip.node.*.allocation_id, 1) : element(data.aws_eip.node.*.id, 1)}"
 }
