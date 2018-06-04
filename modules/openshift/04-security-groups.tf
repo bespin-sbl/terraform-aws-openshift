@@ -123,6 +123,14 @@ resource "aws_security_group" "openshift-public-egress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  //  ALL
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   //  Use our common tags and add a specific name.
   tags = "${merge(
     local.common_tags,
