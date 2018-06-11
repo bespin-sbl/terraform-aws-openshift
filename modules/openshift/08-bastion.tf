@@ -17,7 +17,7 @@ resource "aws_instance" "bastion" {
     "${aws_security_group.openshift-public-egress.id}",
   ]
 
-  key_name = "${aws_key_pair.openshift.key_name}"
+  key_name = "${var.key_name}"
 
   //  Use our common tags and add a specific name.
   tags = "${merge(

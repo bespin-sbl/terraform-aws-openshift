@@ -37,7 +37,7 @@ variable "key_name" {
 
 variable "public_key_path" {
   description = "The local public key path, e.g. ~/.ssh/id_rsa.pub"
-  default = "~/.ssh/id_rsa.pub"
+  default = ""
 }
 
 variable "base_domain" {

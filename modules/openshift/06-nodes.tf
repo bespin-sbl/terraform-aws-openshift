@@ -1,5 +1,6 @@
 //  Create an SSH keypair
 resource "aws_key_pair" "openshift" {
+  count      = "${var.public_key_path != "" ? 1 : 0}"
   key_name   = "${var.key_name}"
   public_key = "${file(var.public_key_path)}"
 }
@@ -41,7 +42,7 @@ resource "aws_instance" "master" {
     volume_type = "gp2"
   }
 
-  key_name = "${aws_key_pair.openshift.key_name}"
+  key_name = "${var.key_name}"
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
@@ -103,7 +104,7 @@ resource "aws_instance" "node1" {
     volume_type = "gp2"
   }
 
-  key_name = "${aws_key_pair.openshift.key_name}"
+  key_name = "${var.key_name}"
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
@@ -140,7 +141,7 @@ resource "aws_instance" "node2" {
     volume_type = "gp2"
   }
 
-  key_name = "${aws_key_pair.openshift.key_name}"
+  key_name = "${var.key_name}"
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
