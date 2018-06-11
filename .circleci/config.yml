@@ -10,6 +10,13 @@ jobs:
       - checkout
       - run: terraform init
       - run: terraform apply -auto-approve
+  openshift:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - run: terraform init
+      - run: make openshift
   destroy:
     docker:
       - image: hashicorp/terraform:light
@@ -20,9 +27,26 @@ jobs:
 
 workflows:
   version: 2
-#  apply:
-#    jobs:
-#      - build
+  build:
+    jobs:
+      - build
+    triggers:
+      - schedule:
+          cron: "0 23 * * *"
+          filters:
+            branches:
+              only:
+                - master
+  openshift:
+    jobs:
+      - openshift
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
   destroy:
     jobs:
       - destroy
