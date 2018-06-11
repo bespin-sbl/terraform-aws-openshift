@@ -9,6 +9,13 @@ jobs:
     steps:
       - checkout
       - run: terraform init
+      - run: terraform plan
+  apply:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - run: terraform init
       - run: terraform apply -auto-approve
   openshift:
     docker:
@@ -30,6 +37,9 @@ workflows:
   build:
     jobs:
       - build
+  apply:
+    jobs:
+      - apply
     triggers:
       - schedule:
           cron: "0 23 * * *"
