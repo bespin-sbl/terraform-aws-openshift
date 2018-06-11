@@ -8,7 +8,9 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
-      - run: ssh-keygen -q -f ~/.ssh/id_rsa -N ''
+      - add_ssh_keys:
+          fingerprints:
+            - "1f:c4:3e:9d:3b:28:0a:68:da:fd:a2:84:6a:e6:32:c0"
       - run: terraform init
       - run: terraform plan
   apply:
@@ -16,6 +18,9 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "1f:c4:3e:9d:3b:28:0a:68:da:fd:a2:84:6a:e6:32:c0"
       - run: terraform init
       - run: terraform apply -auto-approve
   openshift:
