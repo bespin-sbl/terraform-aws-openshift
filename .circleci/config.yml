@@ -23,6 +23,7 @@ jobs:
     steps:
       - checkout
       - run: terraform init
+      - run: terraform apply -auto-approve
       - run: make openshift
   destroy:
     docker:
