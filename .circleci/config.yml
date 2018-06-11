@@ -8,8 +8,6 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
-#      - add_ssh_keys:
-#          fingerprints: ""
       - run: terraform init
       - run: terraform plan
   apply:
