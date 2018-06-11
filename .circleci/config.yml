@@ -47,7 +47,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - bespin
   openshift:
     jobs:
       - openshift
@@ -57,7 +57,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - bespin
   destroy:
     jobs:
       - destroy
@@ -67,4 +67,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - bespin
