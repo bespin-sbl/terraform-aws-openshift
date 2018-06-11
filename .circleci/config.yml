@@ -37,7 +37,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - openshift
+      - build
   apply:
     jobs:
       - apply
@@ -48,16 +48,16 @@ workflows:
             branches:
               only:
                 - bespin
-  openshift:
-    jobs:
-      - openshift
-    triggers:
-      - schedule:
-          cron: "20 0 * * *"
-          filters:
-            branches:
-              only:
-                - bespin
+#  openshift:
+#    jobs:
+#      - openshift
+#    triggers:
+#      - schedule:
+#          cron: "20 0 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - bespin
   destroy:
     jobs:
       - destroy
