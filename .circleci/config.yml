@@ -37,7 +37,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - build
+      - openshift
   apply:
     jobs:
       - apply
