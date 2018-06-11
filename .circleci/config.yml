@@ -38,16 +38,16 @@ workflows:
   build:
     jobs:
       - build
-  apply:
-    jobs:
-      - apply
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - bespin
+#  apply:
+#    jobs:
+#      - apply
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - bespin
 #  openshift:
 #    jobs:
 #      - openshift
