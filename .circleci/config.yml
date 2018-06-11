@@ -8,6 +8,7 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
+      - run: ssh-keygen -q -f ~/.ssh/id_rsa -N ''
       - run: terraform init
       - run: terraform plan
   apply:
