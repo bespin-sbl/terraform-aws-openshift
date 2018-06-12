@@ -50,37 +50,6 @@ resource "aws_internet_gateway" "public" {
   )}"
 }
 
-//  Create an Elastic IP for the NAT Gateway.
-//resource "aws_eip" "public" {
-//  vpc = true
-//
-//  depends_on = ["aws_internet_gateway.public"]
-//
-//  //  Use our common tags and add a specific name.
-//  tags = "${merge(
-//    local.common_tags,
-//    map(
-//      "Name", "${var.cluster_name} NAT"
-//    )
-//  )}"
-//}
-
-//  Create an NAT Gateway for the VPC.
-//resource "aws_nat_gateway" "public" {
-//  allocation_id = "${aws_eip.public.id}"
-//  subnet_id = "${element(aws_subnet.public.*.id, 0)}"
-//
-//  depends_on = ["aws_eip.public"]
-//
-//  //  Use our common tags and add a specific name.
-//  tags = "${merge(
-//    local.common_tags,
-//    map(
-//      "Name", "${var.cluster_name} NAT"
-//    )
-//  )}"
-//}
-
 //  Create a route table allowing all addresses access to the NAT.
 resource "aws_route_table" "public" {
   vpc_id = "${data.aws_vpc.openshift.id}"
@@ -89,11 +58,6 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.public.id}"
   }
-
-//  route {
-//    cidr_block = "0.0.0.0/0"
-//    nat_gateway_id = "${aws_nat_gateway.public.id}"
-//  }
 
   //  Use our common tags and add a specific name.
   tags = "${merge(
