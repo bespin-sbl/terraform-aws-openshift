@@ -11,23 +11,6 @@ jobs:
       - run: echo $FINGER_PRINTS
       - run: terraform init
       - run: terraform plan
-  apply:
-    docker:
-      - image: hashicorp/terraform:light
-    steps:
-      - checkout
-#      - add_ssh_keys:
-#          fingerprints:
-      - run: terraform init
-      - run: terraform apply -auto-approve
-  openshift:
-    docker:
-      - image: hashicorp/terraform:light
-    steps:
-      - checkout
-      - run: terraform init
-      - run: terraform apply -auto-approve
-      - run: make openshift
   destroy:
     docker:
       - image: hashicorp/terraform:light
@@ -41,26 +24,6 @@ workflows:
   build:
     jobs:
       - destroy
-#  apply:
-#    jobs:
-#      - apply
-#    triggers:
-#      - schedule:
-#          cron: "0 0 * * *"
-#          filters:
-#            branches:
-#              only:
-#                - bespin
-#  openshift:
-#    jobs:
-#      - openshift
-#    triggers:
-#      - schedule:
-#          cron: "20 0 * * *"
-#          filters:
-#            branches:
-#              only:
-#                - bespin
   destroy:
     jobs:
       - destroy

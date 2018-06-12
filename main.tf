@@ -25,7 +25,7 @@ module "openshift" {
   //vpc_id          = "vpc-0099424d46e49c8c1"
   vpc_cidr        = "10.0.0.0/16"
   key_name        = "bespin-sbl"
-  public_key_path = "~/.ssh/id_rsa.pub"
+  //public_key_path = "~/.ssh/id_rsa.pub"
   base_domain     = "opspresso.com"
 }
 
