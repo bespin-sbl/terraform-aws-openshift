@@ -8,6 +8,7 @@ jobs:
       - image: hashicorp/terraform:light
     steps:
       - checkout
+      - run: echo $FINGER_PRINTS
       - run: terraform init
       - run: terraform plan
   apply:
@@ -17,7 +18,6 @@ jobs:
       - checkout
 #      - add_ssh_keys:
 #          fingerprints:
-      - run: echo $FINGER_PRINTS
       - run: terraform init
       - run: terraform apply -auto-approve
   openshift:
