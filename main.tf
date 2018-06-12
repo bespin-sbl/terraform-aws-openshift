@@ -30,7 +30,7 @@ module "openshift" {
 }
 
 //  Output some useful variables for quick SSH access etc.
-output "a-console-url" {
+output "admin-url" {
   value = "https://${module.openshift.public_console}:8443"
 }
 
