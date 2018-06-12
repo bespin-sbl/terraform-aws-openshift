@@ -154,7 +154,7 @@ resource "aws_lb_listener" "apps_http" {
 
 resource "aws_lb_target_group" "apps_https" {
   count    = "${var.base_domain != "" ? 1 : 0}"
-  name     = "${var.cluster_name}-apps-https"
+  name     = "${var.cluster_name}-apps-tgs"
   port     = "443"
   protocol = "HTTPS"
   vpc_id   = "${data.aws_vpc.openshift.id}"
