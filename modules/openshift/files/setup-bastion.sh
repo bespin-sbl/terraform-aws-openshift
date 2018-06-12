@@ -7,5 +7,5 @@
 set -x
 exec > /var/log/user-data.log 2>&1
 
-curl -s http://repo.toast.sh/helper/slack.sh | \
+curl -s https://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Started: \`bastion\` $(hostname)
