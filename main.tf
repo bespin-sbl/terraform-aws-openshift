@@ -21,7 +21,7 @@ module "openshift" {
   cluster_name    = "openshift"
   cluster_id      = "openshift-${var.region}"
   master_type     = "m4.xlarge"
-  node_type       = "m4.xlarge"
+  worker_type     = "m4.xlarge"
   //vpc_id          = "vpc-0099424d46e49c8c1"
   vpc_cidr        = "10.0.0.0/16"
   key_name        = "openshift"

@@ -79,7 +79,7 @@ data "template_file" "setup-node" {
 //  autoscaling group, but I'm keeping it simple...
 resource "aws_instance" "node1" {
   ami                  = "${data.aws_ami.rhel7_5.id}"
-  instance_type        = "${var.node_type}"
+  instance_type        = "${var.worker_type}"
   subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
   user_data            = "${element(data.template_file.setup-node.*.rendered, 0)}"
@@ -116,7 +116,7 @@ resource "aws_instance" "node1" {
 }
 resource "aws_instance" "node2" {
   ami                  = "${data.aws_ami.rhel7_5.id}"
-  instance_type        = "${var.node_type}"
+  instance_type        = "${var.worker_type}"
   subnet_id            = "${element(aws_subnet.public.*.id, 1)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
   user_data            = "${element(data.template_file.setup-node.*.rendered, 1)}"
