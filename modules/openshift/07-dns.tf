@@ -127,7 +127,7 @@ resource "aws_lb" "apps" {
 
 resource "aws_lb_target_group" "apps_http" {
   count    = "${var.base_domain != "" ? 1 : 0}"
-  name     = "${var.cluster_name}-apps-http"
+  name     = "${var.cluster_name}-apps-tg"
   port     = "80"
   protocol = "HTTP"
   vpc_id   = "${data.aws_vpc.openshift.id}"
