@@ -76,7 +76,7 @@ resource "aws_lb_target_group" "console" {
   protocol = "HTTPS"
   vpc_id   = "${data.aws_vpc.openshift.id}"
   tags {
-    Name = "${var.cluster_name} Console LB HTTPS"
+    Name = "${var.cluster_name} Console LB TG"
   }
 }
 resource "aws_lb_target_group_attachment" "console" {
