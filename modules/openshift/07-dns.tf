@@ -71,7 +71,7 @@ resource "aws_lb" "console" {
 
 resource "aws_lb_target_group" "console" {
   count    = "${var.base_domain != "" ? 1 : 0}"
-  name     = "${var.cluster_name}-console"
+  name     = "${var.cluster_name}-console-tg"
   port     = "8443"
   protocol = "HTTPS"
   vpc_id   = "${data.aws_vpc.openshift.id}"
