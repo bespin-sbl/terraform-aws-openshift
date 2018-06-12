@@ -127,7 +127,7 @@ resource "aws_lb" "apps" {
 
 resource "aws_lb_target_group" "apps_http" {
   count    = "${var.base_domain != "" ? 1 : 0}"
-  name     = "${var.cluster_name}-apps-tg"
+  name     = "${var.cluster_name}-apps-http"
   port     = "80"
   protocol = "HTTP"
   vpc_id   = "${data.aws_vpc.openshift.id}"
@@ -154,7 +154,7 @@ resource "aws_lb_listener" "apps_http" {
 
 resource "aws_lb_target_group" "apps_https" {
   count    = "${var.base_domain != "" ? 1 : 0}"
-  name     = "${var.cluster_name}-apps-tgs"
+  name     = "${var.cluster_name}-apps-https"
   port     = "443"
   protocol = "HTTPS"
   vpc_id   = "${data.aws_vpc.openshift.id}"
