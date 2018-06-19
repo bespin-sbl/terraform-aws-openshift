@@ -13,7 +13,7 @@ cat > /etc/aws/aws.conf <<- EOF
 Zone = ${availability_zone}
 EOF
 
-curl -s https://repo.toast.sh/helper/slack.sh | \
+curl -sOL https://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Start: \`master\` $(hostname)
 
 # Create initial logs config.
@@ -78,5 +78,5 @@ systemctl restart docker
 # install scripts on the server.
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
 
-curl -s https://repo.toast.sh/helper/slack.sh | \
+curl -sOL https://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Started: \`master\` $(hostname)

@@ -5,7 +5,7 @@ set -x
 # Elevate priviledges, retaining the environment.
 sudo -E su
 
-curl -s https://repo.toast.sh/helper/slack.sh | \
+curl -sOL https://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Install: \`bastion\` $(hostname)
 
 # Install dev tools.
@@ -30,5 +30,5 @@ ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.c
 # If needed, uninstall with the below:
 # ansible-playbook playbooks/adhoc/uninstall.yml
 
-curl -s https://repo.toast.sh/helper/slack.sh | \
+curl -sOL https://repo.toast.sh/helper/slack.sh | \
  bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Installed: \`bastion\` $(hostname)
