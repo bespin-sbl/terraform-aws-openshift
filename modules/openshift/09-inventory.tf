@@ -1,3 +1,11 @@
+//  Base domain.
+data "null_data_source" "domain" {
+  inputs = {
+    dom = "${var.base_domain}"
+    xip = "${aws_eip.master.public_ip}.xip.io"
+  }
+}
+
 //  Collect together all of the output variables needed to build to the final
 //  inventory from the inventory template.
 data "template_file" "inventory" {
@@ -5,7 +13,8 @@ data "template_file" "inventory" {
   vars {
     access_key = "${aws_iam_access_key.openshift-aws-user.id}"
     secret_key = "${aws_iam_access_key.openshift-aws-user.secret}"
-    public_hostname = "${aws_instance.master.public_ip}.xip.io"
+    public_hostname = "console.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
+    default_subdomain = "apps.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
     master_inventory = "${aws_instance.master.private_dns}"
     master_hostname = "${aws_instance.master.private_dns}"
     node1_hostname = "${aws_instance.node1.private_dns}"

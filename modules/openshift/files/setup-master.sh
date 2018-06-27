@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script template is expected to be populated during the setup of a
-# OpenShift  node. It runs on host startup.
+# OpenShift master. It runs on host startup.
 
 # Log everything we do.
 set -x
@@ -13,8 +13,11 @@ cat > /etc/aws/aws.conf <<- EOF
 Zone = ${availability_zone}
 EOF
 
+curl -sOL https://repo.toast.sh/helper/slack.sh | \
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Start: \`master\` $(hostname)
+
 # Create initial logs config.
-cat > ./awslogs.conf << EOF
+cat > ./awslogs.conf <<- EOF
 [general]
 state_file = /var/awslogs/state/agent-state
 
@@ -74,3 +77,6 @@ systemctl restart docker
 # Allow the ec2-user to sudo without a tty, which is required when we run post
 # install scripts on the server.
 echo Defaults:ec2-user \!requiretty >> /etc/sudoers
+
+curl -sOL https://repo.toast.sh/helper/slack.sh | \
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Started: \`master\` $(hostname)
