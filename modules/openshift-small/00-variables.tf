@@ -22,7 +22,7 @@ variable "worker_type" {
 
 variable "etcd_type" {
   description = "The size of the cluster worker nodes, e.g: m4.large. Note that OpenShift will not run on anything smaller than m4.large"
-  default     = "t2.small"
+  default     = "m4.large"
 }
 
 variable "vpc_id" {
