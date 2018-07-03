@@ -9,7 +9,7 @@ data "null_data_source" "domain" {
 //  Collect together all of the output variables needed to build to the final
 //  inventory from the inventory template.
 data "template_file" "inventory" {
-  template = "${file("${path.cwd}/inventories/inventory.template.small.cfg")}"
+  template = "${file("${path.cwd}/templates/inventory.template.small.cfg")}"
 
   vars {
     access_key        = "${aws_iam_access_key.openshift-aws-user.id}"
