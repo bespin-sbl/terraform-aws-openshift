@@ -233,6 +233,16 @@ resource "aws_eip" "node3" {
   )}"
 }
 
+//  Create the etcd userdata script.
+data "template_file" "setup-etcd" {
+  count    = "${length(data.aws_availability_zones.azs.names)}"
+  template = "${file("${path.module}/files/setup-etcd.sh")}"
+
+  vars {
+    availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+  }
+}
+
 resource "aws_instance" "etcd1" {
   ami = "${data.aws_ami.rhel7_5.id}"
 
@@ -240,7 +250,7 @@ resource "aws_instance" "etcd1" {
   instance_type        = "${var.etcd_type}"
   subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
-  user_data            = "${element(data.template_file.setup-node.*.rendered, 0)}"
+  user_data            = "${element(data.template_file.setup-etcd.*.rendered, 0)}"
 
   vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",
@@ -272,7 +282,7 @@ resource "aws_instance" "etcd2" {
   instance_type        = "${var.etcd_type}"
   subnet_id            = "${element(aws_subnet.public.*.id, 1)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
-  user_data            = "${element(data.template_file.setup-node.*.rendered, 1)}"
+  user_data            = "${element(data.template_file.setup-etcd.*.rendered, 1)}"
 
   vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",
@@ -304,7 +314,7 @@ resource "aws_instance" "etcd3" {
   instance_type        = "${var.etcd_type}"
   subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
-  user_data            = "${element(data.template_file.setup-node.*.rendered, 0)}"
+  user_data            = "${element(data.template_file.setup-etcd.*.rendered, 0)}"
 
   vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",

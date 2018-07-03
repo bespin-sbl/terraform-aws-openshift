@@ -14,13 +14,13 @@ openshift:
 
 	# Copy our inventory to the master and run the install script.
 	scp ./inventory.cfg ec2-user@$$(terraform output bastion-public_dns):~
-	cat ./scripts/install-from-bastion.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_dns)
+	cat ../scripts/install-from-bastion.sh | ssh -o StrictHostKeyChecking=no -A ec2-user@$$(terraform output bastion-public_dns)
 
 	# Now the installer is done, run the post-install steps on each host.
-	cat ./scripts/post-install-master.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
-	cat ./scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
-	cat ./scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
-	cat ./scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node3.openshift.local
+	cat ../scripts/post-install-master.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh master.openshift.local
+	cat ../scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node1.openshift.local
+	cat ../scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node2.openshift.local
+	cat ../scripts/post-install-node.sh | ssh -A ec2-user@$$(terraform output bastion-public_dns) ssh node3.openshift.local
 
 output:
 	terraform init && terraform output
