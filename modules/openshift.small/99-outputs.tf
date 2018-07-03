@@ -72,7 +72,7 @@ output "etcd1-public_dns" {
 }
 
 output "etcd1-public_ip" {
-  value = "${aws_eip.etcd1.public_ip}"
+  value = "${aws_instance.etcd1.public_ip}"
 }
 
 output "etcd1-private_dns" {
@@ -88,7 +88,7 @@ output "etcd2-public_dns" {
 }
 
 output "etcd2-public_ip" {
-  value = "${aws_eip.etcd2.public_ip}"
+  value = "${aws_instance.etcd2.public_ip}"
 }
 
 output "etcd2-private_dns" {
@@ -104,7 +104,7 @@ output "etcd3-public_dns" {
 }
 
 output "etcd3-public_ip" {
-  value = "${aws_eip.etcd3.public_ip}"
+  value = "${aws_instance.etcd3.public_ip}"
 }
 
 output "etcd3-private_dns" {
