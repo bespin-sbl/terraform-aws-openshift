@@ -3,20 +3,68 @@ output "public_console" {
   value = "console.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
 }
 
-output "master-public_dns" {
-  value = "${aws_instance.master.public_dns}"
+output "lb-public_dns" {
+  value = "${aws_instance.lb.public_dns}"
 }
 
-output "master-public_ip" {
-  value = "${aws_eip.master.public_ip}"
+output "lb-public_ip" {
+  value = "${aws_instance.lb.public_ip}"
 }
 
-output "master-private_dns" {
-  value = "${aws_instance.master.private_dns}"
+output "lb-private_dns" {
+  value = "${aws_instance.lb.private_dns}"
 }
 
-output "master-private_ip" {
-  value = "${aws_instance.master.private_ip}"
+output "lb-private_ip" {
+  value = "${aws_instance.lb.private_ip}"
+}
+
+output "master1-public_dns" {
+  value = "${aws_instance.master1.public_dns}"
+}
+
+output "master1-public_ip" {
+  value = "${aws_instance.master1.public_ip}"
+}
+
+output "master1-private_dns" {
+  value = "${aws_instance.master1.private_dns}"
+}
+
+output "master1-private_ip" {
+  value = "${aws_instance.master1.private_ip}"
+}
+
+output "master2-public_dns" {
+  value = "${aws_instance.master2.public_dns}"
+}
+
+output "master2-public_ip" {
+  value = "${aws_instance.master2.public_ip}"
+}
+
+output "master2-private_dns" {
+  value = "${aws_instance.master2.private_dns}"
+}
+
+output "master2-private_ip" {
+  value = "${aws_instance.master2.private_ip}"
+}
+
+output "master3-public_dns" {
+  value = "${aws_instance.master3.public_dns}"
+}
+
+output "master3-public_ip" {
+  value = "${aws_instance.master3.public_ip}"
+}
+
+output "master3-private_dns" {
+  value = "${aws_instance.master3.private_dns}"
+}
+
+output "master3-private_ip" {
+  value = "${aws_instance.master3.private_ip}"
 }
 
 output "node1-public_dns" {
@@ -51,68 +99,36 @@ output "node2-private_ip" {
   value = "${aws_instance.node3.private_ip}"
 }
 
-output "node3-public_dns" {
-  value = "${aws_instance.node3.public_dns}"
+output "infra1-public_dns" {
+  value = "${aws_instance.infra1.public_dns}"
 }
 
-output "node3-public_ip" {
-  value = "${aws_eip.node3.public_ip}"
+output "infra1-public_ip" {
+  value = "${aws_eip.infra1.public_ip}"
 }
 
-output "node3-private_dns" {
-  value = "${aws_instance.node3.private_dns}"
+output "infra1-private_dns" {
+  value = "${aws_instance.infra1.private_dns}"
 }
 
-output "node3-private_ip" {
-  value = "${aws_instance.node3.private_ip}"
+output "infra1-private_ip" {
+  value = "${aws_instance.infra1.private_ip}"
 }
 
-output "etcd1-public_dns" {
-  value = "${aws_instance.etcd1.public_dns}"
+output "infra2-public_dns" {
+  value = "${aws_instance.infra2.public_dns}"
 }
 
-output "etcd1-public_ip" {
-  value = "${aws_instance.etcd1.public_ip}"
+output "infra2-public_ip" {
+  value = "${aws_instance.infra2.public_ip}"
 }
 
-output "etcd1-private_dns" {
-  value = "${aws_instance.etcd1.private_dns}"
+output "infra2-private_dns" {
+  value = "${aws_instance.infra2.private_dns}"
 }
 
-output "etcd1-private_ip" {
-  value = "${aws_instance.etcd1.private_ip}"
-}
-
-output "etcd2-public_dns" {
-  value = "${aws_instance.etcd2.public_dns}"
-}
-
-output "etcd2-public_ip" {
-  value = "${aws_instance.etcd2.public_ip}"
-}
-
-output "etcd2-private_dns" {
-  value = "${aws_instance.etcd2.private_dns}"
-}
-
-output "etcd2-private_ip" {
-  value = "${aws_instance.etcd3.private_ip}"
-}
-
-output "etcd3-public_dns" {
-  value = "${aws_instance.etcd3.public_dns}"
-}
-
-output "etcd3-public_ip" {
-  value = "${aws_instance.etcd3.public_ip}"
-}
-
-output "etcd3-private_dns" {
-  value = "${aws_instance.etcd3.private_dns}"
-}
-
-output "etcd3-private_ip" {
-  value = "${aws_instance.etcd3.private_ip}"
+output "infra2-private_ip" {
+  value = "${aws_instance.infra2.private_ip}"
 }
 
 output "bastion-public_dns" {
