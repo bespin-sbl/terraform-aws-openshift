@@ -102,10 +102,10 @@ resource "aws_route53_record" "infra2-record" {
 }
 
 # //  Create the public DNS.
-# data "aws_route53_zone" "public" {
-#   count = "${var.base_domain != "" ? 1 : 0}"
-#   name  = "${var.base_domain}"
-# }
+data "aws_route53_zone" "public" {
+  count = "${var.base_domain != "" ? 1 : 0}"
+  name  = "${var.base_domain}"
+}
 
 # data "aws_acm_certificate" "public" {
 #   count  = "${var.base_domain != "" ? 1 : 0}"

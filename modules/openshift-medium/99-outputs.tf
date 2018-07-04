@@ -1,5 +1,5 @@
 //  Output some useful variables for quick SSH access etc.
-output "public_console" {
+output "console-public" {
   value = "console.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
 }
 
@@ -72,7 +72,7 @@ output "node1-public_dns" {
 }
 
 output "node1-public_ip" {
-  value = "${aws_eip.node1.public_ip}"
+  value = "${aws_instance.node1.public_ip}"
 }
 
 output "node1-private_dns" {
@@ -88,7 +88,7 @@ output "node2-public_dns" {
 }
 
 output "node2-public_ip" {
-  value = "${aws_eip.node2.public_ip}"
+  value = "${aws_instance.node2.public_ip}"
 }
 
 output "node2-private_dns" {
@@ -96,7 +96,7 @@ output "node2-private_dns" {
 }
 
 output "node2-private_ip" {
-  value = "${aws_instance.node3.private_ip}"
+  value = "${aws_instance.node2.private_ip}"
 }
 
 output "infra1-public_dns" {
@@ -104,7 +104,7 @@ output "infra1-public_dns" {
 }
 
 output "infra1-public_ip" {
-  value = "${aws_eip.infra1.public_ip}"
+  value = "${aws_instance.infra1.public_ip}"
 }
 
 output "infra1-private_dns" {
