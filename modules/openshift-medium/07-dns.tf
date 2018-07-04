@@ -173,12 +173,7 @@ resource "aws_route53_record" "console" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name    = "console.${data.aws_route53_zone.public.name}"
   type    = "A"
-
-  alias {
-    name                   = "${aws_instance.lb.private_dns}"
-    zone_id                = "${aws_instance.lb.zone_id}"
-    evaluate_target_health = "false"
-  }
+  records = ["${aws_instance.lb.public_ip}"]
 }
 
 # //  Create the Apps LB.
@@ -267,10 +262,5 @@ resource "aws_route53_record" "apps" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name    = "*.apps.${data.aws_route53_zone.public.name}"
   type    = "A"
-
-  alias {
-    name                   = "${aws_instance.lb.private_dns}"
-    zone_id                = "${aws_instance.lb.zone_id}"
-    evaluate_target_health = "false"
-  }
+  records = ["${aws_instance.lb.public_ip}"]
 }
