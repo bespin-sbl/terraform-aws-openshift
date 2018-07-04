@@ -173,6 +173,7 @@ resource "aws_route53_record" "console" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name    = "console.${data.aws_route53_zone.public.name}"
   type    = "A"
+  ttl     = "300"
   records = ["${aws_instance.lb.public_ip}"]
 }
 
@@ -262,5 +263,6 @@ resource "aws_route53_record" "apps" {
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name    = "*.apps.${data.aws_route53_zone.public.name}"
   type    = "A"
+  ttl     = "300"
   records = ["${aws_instance.lb.public_ip}"]
 }
