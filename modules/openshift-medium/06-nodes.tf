@@ -340,11 +340,10 @@ resource "aws_instance" "infra2" {
 
 //  Create the lb userdata script.
 data "template_file" "setup-lb" {
-  count    = "${length(data.aws_availability_zones.azs.names)}"
   template = "${file("${path.module}/files/setup-lb.sh")}"
 
   vars {
-    availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+    availability_zone = "${data.aws_availability_zones.azs.names[0]}"
   }
 }
 
@@ -353,7 +352,7 @@ resource "aws_instance" "lb" {
   instance_type        = "${var.lb_type}"
   subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
-  user_data            = "${element(data.template_file.setup-lb.*.rendered, 0)}"
+  user_data            = "${data.template_file.setup-lb.rendered}"
 
   vpc_security_group_ids = [
     "${aws_security_group.openshift-vpc.id}",

@@ -66,6 +66,9 @@ ssh-infra1:
 ssh-infra2:
 	ssh-add ~/.ssh/id_rsa
 	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh infra2.openshift.local
+ssh-lb:
+	ssh-add ~/.ssh/id_rsa
+	ssh -t -A ec2-user@$$(terraform output bastion-public_dns) ssh lb.openshift.local
 
 # Create sample services.
 sample:
