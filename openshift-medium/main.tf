@@ -34,14 +34,6 @@ output "admin-url" {
   value = "https://${module.openshift.console-public}:8443"
 }
 
-output "lb-public_dns" {
-  value = "${module.openshift.lb-public_dns}"
-}
-
-output "lb-public_ip" {
-  value = "${module.openshift.lb-public_ip}"
-}
-
 output "master1-public_dns" {
   value = "${module.openshift.master1-public_dns}"
 }
