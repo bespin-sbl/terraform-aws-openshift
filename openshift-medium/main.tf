@@ -20,7 +20,6 @@ module "openshift" {
   cluster_id   = "openshift-${var.region}"
   master_type  = "m4.xlarge"
   worker_type  = "m4.xlarge"
-  lb_type      = "t2.medium"
 
   //vpc_id          = "vpc-0099424d46e49c8c1"
   vpc_cidr        = "10.0.0.0/16"
