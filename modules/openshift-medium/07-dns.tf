@@ -12,17 +12,7 @@ resource "aws_route53_zone" "private" {
   }
 }
 
-//  Routes for 'lb', master1~3', 'node1~2' and 'infra1~2'.
-resource "aws_route53_record" "lb-record" {
-  zone_id = "${aws_route53_zone.private.zone_id}"
-  name    = "lb.${aws_route53_zone.private.name}"
-  type    = "A"
-  ttl     = 300
-
-  records = [
-    "${aws_instance.lb.private_ip}",
-  ]
-}
+//  Routes for master1~3', 'node1~2' and 'infra1~2'.
 
 resource "aws_route53_record" "master1-record" {
   zone_id = "${aws_route53_zone.private.zone_id}"
@@ -107,162 +97,212 @@ data "aws_route53_zone" "public" {
   name  = "${var.base_domain}"
 }
 
-# data "aws_acm_certificate" "public" {
-#   count  = "${var.base_domain != "" ? 1 : 0}"
-#   domain = "${var.base_domain}"
+data "aws_acm_certificate" "public" {
+  count  = "${var.base_domain != "" ? 1 : 0}"
+  domain = "${var.base_domain}"
 
-#   statuses = [
-#     "ISSUED",
-#   ]
+  statuses = [
+    "ISSUED",
+  ]
 
-#   most_recent = true
-# }
+  most_recent = true
+}
 
-# //  Create the Console LB.
-# resource "aws_lb" "console" {
-#   count   = "${var.base_domain != "" ? 1 : 0}"
-#   name    = "${var.cluster_name}-console-lb"
-#   subnets = ["${aws_subnet.public.*.id}"]
+//  Create the Console LB.
+resource "aws_lb" "console" {
+  count   = "${var.base_domain != "" ? 1 : 0}"
+  name    = "${var.cluster_name}-console-lb"
+  subnets = ["${aws_subnet.public.*.id}"]
 
-#   security_groups = [
-#     "${aws_security_group.openshift-vpc.id}",
-#     "${aws_security_group.openshift-public-ingress.id}",
-#     "${aws_security_group.openshift-public-egress.id}",
-#   ]
+  security_groups = [
+    "${aws_security_group.openshift-vpc.id}",
+    "${aws_security_group.openshift-public-ingress.id}",
+    "${aws_security_group.openshift-public-egress.id}",
+  ]
 
-#   tags {
-#     Name = "${var.cluster_name} Console LB"
-#   }
-# }
+  tags {
+    Name = "${var.cluster_name} Console LB"
+  }
+}
 
-# resource "aws_lb_target_group" "console" {
-#   count    = "${var.base_domain != "" ? 1 : 0}"
-#   name     = "${var.cluster_name}-console-tg"
-#   port     = "8443"
-#   protocol = "HTTPS"
-#   vpc_id   = "${data.aws_vpc.openshift.id}"
+resource "aws_lb_target_group" "console" {
+  count    = "${var.base_domain != "" ? 1 : 0}"
+  name     = "${var.cluster_name}-console-tg"
+  port     = "8443"
+  protocol = "HTTPS"
+  vpc_id   = "${data.aws_vpc.openshift.id}"
 
-#   tags {
-#     Name = "${var.cluster_name} Console LB TG"
-#   }
-# }
+  tags {
+    Name = "${var.cluster_name} Console LB TG"
+  }
+}
 
-# resource "aws_lb_target_group_attachment" "console" {
-#   count            = "${var.base_domain != "" ? 1 : 0}"
-#   target_group_arn = "${aws_lb_target_group.console.arn}"
-#   target_id        = "${aws_instance.master.id}"
-#   port             = "8443"
-# }
+resource "aws_lb_target_group_attachment" "console1" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.console.arn}"
+  target_id        = "${aws_instance.master1.id}"
+  port             = "8443"
+}
 
-# resource "aws_lb_listener" "console" {
-#   count             = "${var.base_domain != "" ? 1 : 0}"
-#   load_balancer_arn = "${aws_lb.console.arn}"
-#   port              = "8443"
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-2015-05"
-#   certificate_arn   = "${data.aws_acm_certificate.public.arn}"
+resource "aws_lb_target_group_attachment" "console2" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.console.arn}"
+  target_id        = "${aws_instance.master2.id}"
+  port             = "8443"
+}
 
-#   default_action {
-#     target_group_arn = "${aws_lb_target_group.console.arn}"
-#     type             = "forward"
-#   }
-# }
+resource "aws_lb_target_group_attachment" "console3" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.console.arn}"
+  target_id        = "${aws_instance.master3.id}"
+  port             = "8443"
+}
+
+resource "aws_lb_listener" "console" {
+  count             = "${var.base_domain != "" ? 1 : 0}"
+  load_balancer_arn = "${aws_lb.console.arn}"
+  port              = "8443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2015-05"
+  certificate_arn   = "${data.aws_acm_certificate.public.arn}"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.console.arn}"
+    type             = "forward"
+  }
+}
 
 resource "aws_route53_record" "console" {
   count   = "${var.base_domain != "" ? 1 : 0}"
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name    = "console.${data.aws_route53_zone.public.name}"
   type    = "A"
-  ttl     = "300"
-  records = ["${aws_instance.lb.public_ip}"]
+
+  alias {
+    name                   = "${aws_lb.console.dns_name}"
+    zone_id                = "${aws_lb.console.zone_id}"
+    evaluate_target_health = "false"
+  }
 }
 
-# //  Create the Apps LB.
-# resource "aws_lb" "apps" {
-#   count   = "${var.base_domain != "" ? 1 : 0}"
-#   name    = "${var.cluster_name}-apps-lb"
-#   subnets = ["${aws_subnet.public.*.id}"]
+//  Create the Apps LB.
+resource "aws_lb" "apps" {
+  count   = "${var.base_domain != "" ? 1 : 0}"
+  name    = "${var.cluster_name}-apps-lb"
+  subnets = ["${aws_subnet.public.*.id}"]
 
-#   security_groups = [
-#     "${aws_security_group.openshift-vpc.id}",
-#     "${aws_security_group.openshift-public-ingress.id}",
-#     "${aws_security_group.openshift-public-egress.id}",
-#   ]
+  security_groups = [
+    "${aws_security_group.openshift-vpc.id}",
+    "${aws_security_group.openshift-public-ingress.id}",
+    "${aws_security_group.openshift-public-egress.id}",
+  ]
 
-#   tags {
-#     Name = "${var.cluster_name} Apps LB"
-#   }
-# }
+  tags {
+    Name = "${var.cluster_name} Apps LB"
+  }
+}
 
-# resource "aws_lb_target_group" "apps_http" {
-#   count    = "${var.base_domain != "" ? 1 : 0}"
-#   name     = "${var.cluster_name}-apps-http"
-#   port     = "80"
-#   protocol = "HTTP"
-#   vpc_id   = "${data.aws_vpc.openshift.id}"
+resource "aws_lb_target_group" "apps_http" {
+  count    = "${var.base_domain != "" ? 1 : 0}"
+  name     = "${var.cluster_name}-apps-http"
+  port     = "80"
+  protocol = "HTTP"
+  vpc_id   = "${data.aws_vpc.openshift.id}"
 
-#   tags {
-#     Name = "${var.cluster_name} Apps LB HTTP"
-#   }
-# }
+  tags {
+    Name = "${var.cluster_name} Apps LB HTTP"
+  }
+}
 
-# resource "aws_lb_target_group_attachment" "apps_http" {
-#   count            = "${var.base_domain != "" ? 1 : 0}"
-#   target_group_arn = "${aws_lb_target_group.apps_http.arn}"
-#   target_id        = "${aws_instance.master.id}"
-#   port             = "80"
-# }
+resource "aws_lb_target_group_attachment" "apps_http1" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.apps_http.arn}"
+  target_id        = "${aws_instance.master1.id}"
+  port             = "80"
+}
 
-# resource "aws_lb_listener" "apps_http" {
-#   count             = "${var.base_domain != "" ? 1 : 0}"
-#   load_balancer_arn = "${aws_lb.apps.arn}"
-#   port              = "80"
-#   protocol          = "HTTP"
+resource "aws_lb_target_group_attachment" "apps_http2" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.apps_http.arn}"
+  target_id        = "${aws_instance.master2.id}"
+  port             = "80"
+}
 
-#   default_action {
-#     target_group_arn = "${aws_lb_target_group.apps_http.arn}"
-#     type             = "forward"
-#   }
-# }
+resource "aws_lb_target_group_attachment" "apps_http3" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.apps_http.arn}"
+  target_id        = "${aws_instance.master3.id}"
+  port             = "80"
+}
 
-# resource "aws_lb_target_group" "apps_https" {
-#   count    = "${var.base_domain != "" ? 1 : 0}"
-#   name     = "${var.cluster_name}-apps-https"
-#   port     = "443"
-#   protocol = "HTTPS"
-#   vpc_id   = "${data.aws_vpc.openshift.id}"
+resource "aws_lb_listener" "apps_http" {
+  count             = "${var.base_domain != "" ? 1 : 0}"
+  load_balancer_arn = "${aws_lb.apps.arn}"
+  port              = "80"
+  protocol          = "HTTP"
 
-#   tags {
-#     Name = "${var.cluster_name} Apps LB HTTPS"
-#   }
-# }
+  default_action {
+    target_group_arn = "${aws_lb_target_group.apps_http.arn}"
+    type             = "forward"
+  }
+}
 
-# resource "aws_lb_target_group_attachment" "apps_https" {
-#   count            = "${var.base_domain != "" ? 1 : 0}"
-#   target_group_arn = "${aws_lb_target_group.apps_https.arn}"
-#   target_id        = "${aws_instance.master.id}"
-#   port             = "443"
-# }
+resource "aws_lb_target_group" "apps_https" {
+  count    = "${var.base_domain != "" ? 1 : 0}"
+  name     = "${var.cluster_name}-apps-https"
+  port     = "443"
+  protocol = "HTTPS"
+  vpc_id   = "${data.aws_vpc.openshift.id}"
 
-# resource "aws_lb_listener" "apps_https" {
-#   count             = "${var.base_domain != "" ? 1 : 0}"
-#   load_balancer_arn = "${aws_lb.apps.arn}"
-#   port              = "443"
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-2015-05"
-#   certificate_arn   = "${data.aws_acm_certificate.public.arn}"
+  tags {
+    Name = "${var.cluster_name} Apps LB HTTPS"
+  }
+}
 
-#   default_action {
-#     target_group_arn = "${aws_lb_target_group.apps_https.arn}"
-#     type             = "forward"
-#   }
-# }
+resource "aws_lb_target_group_attachment" "apps_https1" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.apps_https.arn}"
+  target_id        = "${aws_instance.master1.id}"
+  port             = "443"
+}
+
+resource "aws_lb_target_group_attachment" "apps_https2" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.apps_https.arn}"
+  target_id        = "${aws_instance.master2.id}"
+  port             = "443"
+}
+
+resource "aws_lb_target_group_attachment" "apps_https3" {
+  count            = "${var.base_domain != "" ? 1 : 0}"
+  target_group_arn = "${aws_lb_target_group.apps_https.arn}"
+  target_id        = "${aws_instance.master3.id}"
+  port             = "443"
+}
+
+resource "aws_lb_listener" "apps_https" {
+  count             = "${var.base_domain != "" ? 1 : 0}"
+  load_balancer_arn = "${aws_lb.apps.arn}"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2015-05"
+  certificate_arn   = "${data.aws_acm_certificate.public.arn}"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.apps_https.arn}"
+    type             = "forward"
+  }
+}
 
 resource "aws_route53_record" "apps" {
   count   = "${var.base_domain != "" ? 1 : 0}"
   zone_id = "${data.aws_route53_zone.public.zone_id}"
   name    = "*.apps.${data.aws_route53_zone.public.name}"
   type    = "A"
-  ttl     = "300"
-  records = ["${aws_instance.lb.public_ip}"]
+
+  alias {
+    name                   = "${aws_lb.apps.dns_name}"
+    zone_id                = "${aws_lb.apps.zone_id}"
+    evaluate_target_health = "false"
+  }
 }

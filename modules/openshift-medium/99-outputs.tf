@@ -3,22 +3,6 @@ output "console-public" {
   value = "console.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
 }
 
-output "lb-public_dns" {
-  value = "${aws_instance.lb.public_dns}"
-}
-
-output "lb-public_ip" {
-  value = "${aws_instance.lb.public_ip}"
-}
-
-output "lb-private_dns" {
-  value = "${aws_instance.lb.private_dns}"
-}
-
-output "lb-private_ip" {
-  value = "${aws_instance.lb.private_ip}"
-}
-
 output "master1-public_dns" {
   value = "${aws_instance.master1.public_dns}"
 }

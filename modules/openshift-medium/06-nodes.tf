@@ -316,6 +316,7 @@ resource "aws_instance" "infra2" {
 #   instance = "${aws_instance.node1.id}"
 #   vpc      = true
 
+
 #   //  Use our common tags and add a specific name.
 #   tags = "${merge(
 #     local.common_tags,
@@ -325,9 +326,11 @@ resource "aws_instance" "infra2" {
 #   )}"
 # }
 
+
 # resource "aws_eip" "node2" {
 #   instance = "${aws_instance.node2.id}"
 #   vpc      = true
+
 
 #   //  Use our common tags and add a specific name.
 #   tags = "${merge(
@@ -338,49 +341,58 @@ resource "aws_instance" "infra2" {
 #   )}"
 # }
 
-//  Create the lb userdata script.
-data "template_file" "setup-lb" {
-  template = "${file("${path.module}/files/setup-lb.sh")}"
 
-  vars {
-    availability_zone = "${data.aws_availability_zones.azs.names[0]}"
-  }
-}
+# //  Create the lb userdata script.
+# data "template_file" "setup-lb" {
+#   template = "${file("${path.module}/files/setup-lb.sh")}"
 
-resource "aws_instance" "lb" {
-  ami                  = "${data.aws_ami.rhel7_5.id}"
-  instance_type        = "${var.lb_type}"
-  subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
-  iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
-  user_data            = "${data.template_file.setup-lb.rendered}"
 
-  vpc_security_group_ids = [
-    "${aws_security_group.openshift-vpc.id}",
-    "${aws_security_group.openshift-public-ingress.id}",
-    "${aws_security_group.openshift-public-egress.id}",
-  ]
+#   vars {
+#     availability_zone = "${data.aws_availability_zones.azs.names[0]}"
+#   }
+# }
 
-  //  We need at least 30GB for OpenShift, let's be greedy...
-  root_block_device {
-    volume_size = 50
-    volume_type = "gp2"
-  }
 
-  # Storage for Docker, see:
-  # https://docs.openshift.org/latest/install_config/install/host_preparation.html#configuring-docker-storage
-  ebs_block_device {
-    device_name = "/dev/sdf"
-    volume_size = 80
-    volume_type = "gp2"
-  }
+# resource "aws_instance" "lb" {
+#   ami                  = "${data.aws_ami.rhel7_5.id}"
+#   instance_type        = "${var.lb_type}"
+#   subnet_id            = "${element(aws_subnet.public.*.id, 0)}"
+#   iam_instance_profile = "${aws_iam_instance_profile.openshift-instance-profile.id}"
+#   user_data            = "${data.template_file.setup-lb.rendered}"
 
-  key_name = "${var.key_name}"
 
-  //  Use our common tags and add a specific name.
-  tags = "${merge(
-    local.common_tags,
-    map(
-      "Name", "${var.cluster_name} LB Node"
-    )
-  )}"
-}
+#   vpc_security_group_ids = [
+#     "${aws_security_group.openshift-vpc.id}",
+#     "${aws_security_group.openshift-public-ingress.id}",
+#     "${aws_security_group.openshift-public-egress.id}",
+#   ]
+
+
+#   //  We need at least 30GB for OpenShift, let's be greedy...
+#   root_block_device {
+#     volume_size = 50
+#     volume_type = "gp2"
+#   }
+
+
+#   # Storage for Docker, see:
+#   # https://docs.openshift.org/latest/install_config/install/host_preparation.html#configuring-docker-storage
+#   ebs_block_device {
+#     device_name = "/dev/sdf"
+#     volume_size = 80
+#     volume_type = "gp2"
+#   }
+
+
+#   key_name = "${var.key_name}"
+
+
+#   //  Use our common tags and add a specific name.
+#   tags = "${merge(
+#     local.common_tags,
+#     map(
+#       "Name", "${var.cluster_name} LB Node"
+#     )
+#   )}"
+# }
+

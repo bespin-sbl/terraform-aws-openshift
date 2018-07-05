@@ -2,7 +2,7 @@
 data "null_data_source" "domain" {
   inputs = {
     dom = "${var.base_domain}"
-    xip = "${aws_instance.lb.public_ip}.xip.io"
+    xip = "${aws_instance.master1.public_ip}.xip.io"
   }
 }
 
@@ -16,7 +16,6 @@ data "template_file" "inventory" {
     secret_key        = "${aws_iam_access_key.openshift-aws-user.secret}"
     public_hostname   = "console.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
     default_subdomain = "apps.${var.base_domain != "" ? data.null_data_source.domain.outputs["dom"] : data.null_data_source.domain.outputs["xip"]}"
-    lb_hostname       = "${aws_instance.lb.private_dns}"
     master1_hostname  = "${aws_instance.master1.private_dns}"
     master2_hostname  = "${aws_instance.master2.private_dns}"
     master3_hostname  = "${aws_instance.master3.private_dns}"
