@@ -381,7 +381,7 @@ resource "aws_instance" "lb" {
   tags = "${merge(
     local.common_tags,
     map(
-      "Name", "${var.cluster_name} Infra Node 2"
+      "Name", "${var.cluster_name} LB Node"
     )
   )}"
 }
