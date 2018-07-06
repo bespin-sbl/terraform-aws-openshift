@@ -131,10 +131,6 @@
 #   value = "${aws_instance.bastion.private_ip}"
 # }
 
-output "efs" {
-  value = "${aws_efs_file_system.storage}"
-}
-
 output "efs-id" {
   value = "${aws_efs_file_system.storage.id}"
 }
