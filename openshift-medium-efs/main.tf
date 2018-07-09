@@ -98,13 +98,13 @@ module "openshift" {
 # }
 
 output "efs-id" {
-  value = "${aws_efs_file_system.storage.id}"
+  value = "${module.openshift.efs-id}"
 }
 
 output "efs-kms_key_id" {
-  value = "${aws_efs_file_system.storage.kms_key_id}"
+  value = "${module.openshift.efs-kms_key_id}"
 }
 
 output "efs-dns_name" {
-  value = "${aws_efs_file_system.storage.dns_name}"
+  value = "${module.openshift.efs-dns_name}"
 }
