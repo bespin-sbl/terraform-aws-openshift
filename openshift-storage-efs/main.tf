@@ -18,10 +18,10 @@ module "openshift" {
   region       = "${var.region}"
   cluster_name = "openshift"
   cluster_id   = "openshift-${var.region}"
-  vpc_id       = "vpc-74755b1c"
+  vpc_id       = "${var.vpc_id}"
   vpc_cidr     = "10.0.0.0/16"
-  access_key   = "${aws.access_key.value}"
-  secret_key   = "${aws.secret_key.value}"
+  access_key   = "${var.access_key}"
+  secret_key   = "${var.secret_key}"
 }
 
 output "efs-id" {

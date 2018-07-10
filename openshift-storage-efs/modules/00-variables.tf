@@ -20,4 +20,14 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "access_key" {
+  description = "Access key"
+  default     = ""
+}
+
+variable "secret_key" {
+  description = "Secret key"
+  default     = ""
+}
+
 data "aws_availability_zones" "azs" {}
