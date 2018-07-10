@@ -96,7 +96,14 @@ resource "aws_iam_user_policy" "openshift-aws-user" {
         "ec2:DeleteVolume",
         "ec2:DescribeSubnets",
         "ec2:CreateSecurityGroup",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeNetworkInterfaceAttribute",
+        "ec2:DescribeNetworkInterfaces",
         "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeVpcs",
+        "elasticfilesystem:Describe*",
         "elasticloadbalancing:DescribeTags",
         "elasticloadbalancing:CreateLoadBalancerListeners",
         "ec2:DescribeRouteTables",
@@ -108,7 +115,8 @@ resource "aws_iam_user_policy" "openshift-aws-user" {
         "elasticloadbalancing:CreateLoadBalancer",
         "elasticloadbalancing:DeleteLoadBalancer",
         "elasticloadbalancing:ModifyLoadBalancerAttributes",
-        "elasticloadbalancing:DescribeLoadBalancerAttributes"
+        "elasticloadbalancing:DescribeLoadBalancerAttributes",
+        "kms:ListAliases"
       ],
       "Resource": "*"
     }
