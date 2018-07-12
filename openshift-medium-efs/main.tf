@@ -14,7 +14,7 @@ provider "aws" {
 
 //  Create the OpenShift cluster using our module.
 module "openshift" {
-  source       = "../modules/openshift-medium-efs"
+  source       = "./modules"
   region       = "${var.region}"
   cluster_name = "openshift"
   cluster_id   = "openshift-${var.region}"
@@ -99,10 +99,6 @@ output "bastion-public_ip" {
 
 output "efs-id" {
   value = "${module.openshift.efs-id}"
-}
-
-output "efs-kms_key_id" {
-  value = "${module.openshift.efs-kms_key_id}"
 }
 
 output "efs-dns_name" {
