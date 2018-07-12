@@ -10,7 +10,7 @@ resource "aws_efs_file_system" "storage" {
 }
 
 resource "aws_efs_mount_target" "targets" {
-  count          = "${length(aws_subnet.public.*.id)}"
+  count          = 2
   file_system_id = "${aws_efs_file_system.storage.id}"
   subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
 }
