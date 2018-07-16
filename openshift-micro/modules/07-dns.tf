@@ -158,14 +158,14 @@ resource "aws_lb_target_group" "apps_http" {
 resource "aws_lb_target_group_attachment" "apps_http1" {
   count            = "${var.base_domain != "" ? 1 : 0}"
   target_group_arn = "${aws_lb_target_group.apps_http.arn}"
-  target_id        = "${aws_instance.infra1.id}"
+  target_id        = "${aws_instance.node1.id}"
   port             = "80"
 }
 
 resource "aws_lb_target_group_attachment" "apps_http2" {
   count            = "${var.base_domain != "" ? 1 : 0}"
   target_group_arn = "${aws_lb_target_group.apps_http.arn}"
-  target_id        = "${aws_instance.infra2.id}"
+  target_id        = "${aws_instance.node2.id}"
   port             = "80"
 }
 
@@ -196,14 +196,14 @@ resource "aws_lb_target_group" "apps_https" {
 resource "aws_lb_target_group_attachment" "apps_https1" {
   count            = "${var.base_domain != "" ? 1 : 0}"
   target_group_arn = "${aws_lb_target_group.apps_https.arn}"
-  target_id        = "${aws_instance.infra1.id}"
+  target_id        = "${aws_instance.node1.id}"
   port             = "443"
 }
 
 resource "aws_lb_target_group_attachment" "apps_https2" {
   count            = "${var.base_domain != "" ? 1 : 0}"
   target_group_arn = "${aws_lb_target_group.apps_https.arn}"
-  target_id        = "${aws_instance.infra2.id}"
+  target_id        = "${aws_instance.node2.id}"
   port             = "443"
 }
 
