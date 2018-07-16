@@ -6,7 +6,7 @@ set -x
 sudo -E su
 
 curl -sOL https://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Install EFS Provisioner: \`bastion\` $(hostname)
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN Install: \`bastion\` $(hostname)
 
 # Install dev tools.
 yum install -y "@Development Tools" python2-pip openssl-devel python-devel gcc libffi-devel
@@ -24,10 +24,11 @@ git clone -b release-3.9 https://github.com/openshift/openshift-ansible
 # git clone -b release-3.6 https://github.com/openshift/openshift-ansible
 
 # Run the playbook.
-ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory-efs.cfg ./openshift-ansible/playbooks/openshift-provisioners/config.yml
+ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.cfg ./openshift-ansible/playbooks/prerequisites.yml
+ANSIBLE_HOST_KEY_CHECKING=False /usr/local/bin/ansible-playbook -i ./inventory.cfg ./openshift-ansible/playbooks/deploy_cluster.yml
 
 # If needed, uninstall with the below:
 # ansible-playbook playbooks/adhoc/uninstall.yml
 
 curl -sOL https://repo.toast.sh/helper/slack.sh | \
- bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Installed EFS Provisioner: \`bastion\` $(hostname)
+ bash -s -- --token=TATRUQ6P2/BAY9WSD7C/1bCckidSMB8KctWf2CgbHGtN --color=good Installed: \`bastion\` $(hostname)

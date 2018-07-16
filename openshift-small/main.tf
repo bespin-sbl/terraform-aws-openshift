@@ -17,7 +17,7 @@ provider "aws" {
 
 //  Create the OpenShift cluster using our module.
 module "openshift" {
-  source       = "../modules/openshift-small"
+  source       = "./modules"
   region       = "${var.region}"
   cluster_name = "openshift"
   cluster_id   = "openshift-${var.region}"
